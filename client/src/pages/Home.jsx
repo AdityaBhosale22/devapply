@@ -1,11 +1,22 @@
-import React from 'react'
+import React from "react";
+import Navbar from "../components/Navbar";
+import Hero from "../components/Hero";
+import Aitools from "../components/Aitools";
+import Testimonials from "../components/Testimonials";
+import Plan from "../components/Plan";
+import Footer from "../components/Footer";
 
 const Home = () => {
   return (
-    <div>
-      <h1>Home</h1>
-    </div>
-  )
-}
+    <>
+      <Navbar />
+      <Hero />
+      <Aitools />
+      <Testimonials />
+      <Plan />
+      <Footer />
+    </>
+  );
+};
 
-export default Home
+export default Home;
