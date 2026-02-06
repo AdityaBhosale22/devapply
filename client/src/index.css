@@ -4,6 +4,15 @@
 *{
   font-family: 'Zalando Sans', sans-serif;
 }
-@theme{
-  --color-primary: #ffffe3
+
+:root {
+  --color-primary: #ffffe3;
+}
+
+.reset-tw, .reset-tw *{
+  all:revert !important;
+}
+
+.cl-drawerRoot{
+  z-index: 10;
 }
