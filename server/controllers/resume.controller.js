@@ -1,8 +1,12 @@
 import { extractTextFromPDF } from "../utils/pdfParser.js";
 import { analyzeResumeWithAI } from "../services/ai.service.js";
+import { deductCredits } from "../utils/credits.js";
+import { logActivity } from "../utils/activityLogger.js";
 
 export const analyzeResume = async (req, res) => {
   try {
+    console.log("=== CONTROLLER START ===");
+
     if (!req.file) {
       return res.status(400).json({
         success: false,
@@ -14,10 +18,23 @@ export const analyzeResume = async (req, res) => {
 
     const aiResult = await analyzeResumeWithAI(resumeText);
 
+    const { userId } = req.auth();
+
+    await deductCredits(userId, 5);
+
+    await logActivity({
+      userId: req.auth()?.userId,
+      feature: "resume_analyzer",
+      prompt: resumeText.slice(0, 500), // prevent huge DB storage
+      result: JSON.stringify(aiResult),
+      creditsUsed: 5,
+    });
+
     res.json({
       success: true,
       data: aiResult,
     });
+
   } catch (error) {
     console.error(error);
     res.status(500).json({

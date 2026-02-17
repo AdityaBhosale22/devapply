@@ -1,13 +1,13 @@
 import express from "express";
 import { requireAuthMiddleware } from "../middlewares/auth.middleware.js";
-import { getUserActivities } from "../controllers/activity.controller.js";
+import { upgradePlan } from "../controllers/subscription.controller.js";
 
 const router = express.Router();
 
-router.get(
-  "/",
+router.post(
+  "/upgrade",
   requireAuthMiddleware,
-  getUserActivities
+  upgradePlan
 );
 
 export default router;
