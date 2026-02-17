@@ -27,6 +27,7 @@ const App = () => {
         <Route path="/app/projectbulletgenerator" element={<ProjectBulletGenerator />} />
         <Route path="/app/jobfitanalyzer" element={<JobFitAnalyzer />} />
         <Route path="/app/usage" element={<Usage />} />
+        <Route path="/app/pricing" element={<Pricing />} />
       </Route>
     </Routes>
   );
