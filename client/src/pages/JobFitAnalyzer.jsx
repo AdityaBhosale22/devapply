@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import toast from "react-hot-toast";
+import axios from "axios";
+import { useAuth } from "@clerk/clerk-react";
 import { 
   UploadCloud, 
   FileText, 
@@ -12,38 +14,56 @@ import {
 } from "lucide-react";
 
 export default function JobFitAnalyzer() {
-  const [file, setFile] = useState(null);
+  const { getToken } = useAuth();
+
+  const [file, setFile] = useState(null); // Back to using a file!
   const [jd, setJd] = useState("");
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState(null);
 
-  const handleAnalyze = () => {
+  const handleAnalyze = async () => {
     if (!file || !jd) {
-      toast.error("Please upload resume and job description");
+      toast.error("Please upload a resume and paste the job description");
       return;
     }
 
-    setLoading(true);
+    try {
+      setLoading(true);
+      const token = await getToken();
 
-    // TEMP mock result
-    setTimeout(() => {
-      setResult({
-        score: 72,
-        matchedSkills: ["Node.js", "REST APIs", "React", "JavaScript"],
-        missingSkills: ["Docker", "System Design", "AWS", "CI/CD"],
-        suggestions: [
-          "Add backend performance metrics to your Node.js projects.",
-          "Explicitly mention experience with scalable systems if applicable.",
-          "Consider adding a small Docker project to your portfolio to close the gap.",
-        ],
-      });
+      // ⭐ Use FormData to send both the file and the text
+      const formData = new FormData();
+      formData.append("resume", file);
+      formData.append("jobDescription", jd);
 
+      const { data } = await axios.post(
+        "http://localhost:5000/api/job-fit",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data", // Tell Express a file is coming
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (data.success) {
+        // Parse the Gemini JSON string
+        const cleanedString = data.data.replace(/```json|```/g, "").trim();
+        const parsedData = JSON.parse(cleanedString);
+        
+        setResult(parsedData);
+        toast.success("Job fit analysis complete!");
+      }
+
+    } catch (err) {
+      console.error("Job Fit Error:", err);
+      toast.error(err.response?.data?.message || "Analysis failed. Try again.");
+    } finally {
       setLoading(false);
-      toast.success("Job fit analysis complete!");
-    }, 2000);
+    }
   };
 
-  // Helper to determine score color
   const getScoreColor = (score) => {
     if (score >= 80) return "text-emerald-600 bg-emerald-50 border-emerald-200";
     if (score >= 60) return "text-amber-600 bg-amber-50 border-amber-200";
@@ -61,20 +81,19 @@ export default function JobFitAnalyzer() {
             Job Fit Analyzer
           </h1>
           <p className="text-slate-500 text-lg max-w-2xl">
-            Upload your resume and a job description to see how well you match the role and what skills you are missing.
+            Upload your resume and paste a job description to see how well you match the role.
           </p>
         </div>
 
-        {/* INPUT SECTION: Split Grid */}
+        {/* INPUT SECTION */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           
-          {/* Card 1: Resume Upload */}
+          {/* Card 1: Resume Upload (Restored!) */}
           <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 flex flex-col h-full">
             <h3 className="font-semibold text-slate-800 mb-4 flex items-center gap-2">
               <span className="bg-indigo-100 text-indigo-700 w-6 h-6 rounded-full flex items-center justify-center text-xs">1</span>
               Upload Resume
             </h3>
-            
             <div className={`
               flex-grow relative group border-2 border-dashed rounded-xl p-8 transition-all duration-300 flex flex-col items-center justify-center text-center
               ${file ? "border-indigo-500 bg-indigo-50/30" : "border-slate-300 hover:border-indigo-400 hover:bg-slate-50"}
@@ -94,7 +113,7 @@ export default function JobFitAnalyzer() {
             </div>
           </div>
 
-          {/* Card 2: Job Description */}
+          {/* Card 2: Job Description Textarea */}
           <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 flex flex-col h-full">
             <h3 className="font-semibold text-slate-800 mb-4 flex items-center gap-2">
                <span className="bg-indigo-100 text-indigo-700 w-6 h-6 rounded-full flex items-center justify-center text-xs">2</span>
@@ -128,7 +147,7 @@ export default function JobFitAnalyzer() {
               </>
             ) : (
               <>
-                <span>Run Analysis</span>
+                <span>Run Analysis (10 Credits)</span>
                 <ArrowRight size={20} />
               </>
             )}
@@ -138,7 +157,6 @@ export default function JobFitAnalyzer() {
         {/* RESULTS SECTION */}
         {result && (
           <div className="space-y-6 animate-in fade-in slide-in-from-bottom-6 duration-700">
-            
             {/* Score Banner */}
             <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-8 flex flex-col md:flex-row items-center justify-between gap-6">
               <div className="text-center md:text-left">
@@ -155,25 +173,18 @@ export default function JobFitAnalyzer() {
                     <span className="text-3xl font-bold text-slate-800">{result.score}%</span>
                   </div>
                 </div>
-                <div className="hidden md:block w-px h-16 bg-slate-200 mx-4"></div>
-                <div className="hidden md:block text-sm text-slate-600 max-w-xs">
-                  {result.score >= 80 ? "Great match! You are a strong candidate for this role." : 
-                   result.score >= 60 ? "Good match, but there are some significant gaps to address." :
-                   "Low match. You might need to upskill or tailor your resume significantly."}
-                </div>
               </div>
             </div>
 
             {/* Comparison Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {/* Matched Skills */}
               <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
                 <div className="flex items-center gap-2 mb-4 text-emerald-700">
                   <CheckCircle2 size={20} />
                   <h3 className="font-bold">Matched Skills</h3>
                 </div>
                 <div className="flex flex-wrap gap-2">
-                  {result.matchedSkills.map((skill, idx) => (
+                  {result.matchedSkills?.map((skill, idx) => (
                     <span key={idx} className="px-3 py-1 bg-emerald-50 text-emerald-700 text-sm font-medium rounded-full border border-emerald-100">
                       {skill}
                     </span>
@@ -181,14 +192,13 @@ export default function JobFitAnalyzer() {
                 </div>
               </div>
 
-              {/* Missing Skills */}
               <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
                 <div className="flex items-center gap-2 mb-4 text-rose-600">
                   <XCircle size={20} />
                   <h3 className="font-bold">Missing Skills</h3>
                 </div>
                 <div className="flex flex-wrap gap-2">
-                  {result.missingSkills.map((skill, idx) => (
+                  {result.missingSkills?.map((skill, idx) => (
                     <span key={idx} className="px-3 py-1 bg-rose-50 text-rose-700 text-sm font-medium rounded-full border border-rose-100">
                       {skill}
                     </span>
@@ -204,7 +214,7 @@ export default function JobFitAnalyzer() {
                 <h3 className="font-bold">How to Improve Your Odds</h3>
               </div>
               <ul className="space-y-3">
-                {result.suggestions.map((suggestion, idx) => (
+                {result.suggestions?.map((suggestion, idx) => (
                   <li key={idx} className="flex items-start gap-3 text-slate-700 text-sm">
                     <span className="mt-1.5 w-1.5 h-1.5 bg-indigo-500 rounded-full flex-shrink-0" />
                     <span className="leading-relaxed">{suggestion}</span>

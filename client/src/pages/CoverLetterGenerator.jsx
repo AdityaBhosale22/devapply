@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import toast from "react-hot-toast";
+import axios from "axios"; // 👈 You need to import axios to make the API call
+import { useAuth } from "@clerk/clerk-react"; // 👈 Import useAuth from Clerk
 import {
   Download,
   Send,
@@ -13,6 +15,7 @@ import {
 import Markdown from "react-markdown";
 
 export default function CoverLetterGenerator() {
+  const { getToken } = useAuth(); 
   const [jobTitle, setJobTitle] = useState("");
   const [company, setCompany] = useState("");
   const [jd, setJd] = useState("");
@@ -20,33 +23,42 @@ export default function CoverLetterGenerator() {
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState("");
 
-  const handleGenerate = async () => {
-    if (!jobTitle || !company || !jd) {
-      toast.error("Please fill in all fields");
-      return;
-    }
+const handleGenerate = async () => {
+  if (!jobTitle || !company || !jd) {
+    toast.error("Fill all fields");
+    return;
+  }
 
+  try {
     setLoading(true);
 
-    // TEMP: mock response (backend later)
-    setTimeout(() => {
-      setResult(`
-**Dear Hiring Manager at ${company},**
+    const token = await getToken();
 
-I am writing to express my enthusiastic interest in the **${jobTitle}** position. With hands-on experience in full-stack development and a strong understanding of backend systems, I bring a problem-solving mindset and a passion for building scalable applications.
+    const { data } = await axios.post("http://localhost:5000/api/cover-letter",
+      {
+        role: jobTitle,
+        company,
+        jd,
+        tone,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
 
-My experience aligns closely with the responsibilities described in the job description, specifically regarding API development and database optimization. I am confident in my ability to contribute effectively to your team's goals from day one.
-
-Thank you for considering my application. I look forward to the possibility of discussing how my skills match your needs.
-
-Sincerely,  
-Your Name
-      `);
-
-      setLoading(false);
+    if (data.success) {
+      setResult(data.data);
       toast.success("Cover letter generated!");
-    }, 2000);
-  };
+    }
+
+  } catch (err) {
+    toast.error(err.response?.data?.message || "Generation failed");
+  }
+
+  setLoading(false);
+};
 
   const downloadLetter = () => {
     const element = document.createElement("a");

@@ -10,34 +10,59 @@ import {
   Sparkles,
 } from "lucide-react";
 import Markdown from "react-markdown";
+import axios from "axios";
+import { useAuth } from "@clerk/clerk-react"; // Use @clerk/nextjs if you are on Next.js
 
 export default function ProjectBulletGenerator() {
+  const { getToken } = useAuth(); // ⭐ Initialize Clerk auth
+
   const [title, setTitle] = useState("");
   const [stack, setStack] = useState("");
   const [description, setDescription] = useState("");
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState("");
 
-  const handleGenerate = () => {
+  const handleGenerate = async () => {
     if (!title || !stack || !description) {
       toast.error("Please fill in all fields");
       return;
     }
 
-    setLoading(true);
+    try {
+      setLoading(true);
 
-    // TEMP mock
-    setTimeout(() => {
-      setResult(`
-- Developed **${title}**, a full-stack SaaS platform using **${stack.split(",")[0] || "modern tech"}**, serving 500+ active users.
-- Engineered robust RESTful APIs with **Node.js** and **PostgreSQL**, reducing query latency by 40% through indexing strategies.
-- Implemented secure authentication and role-based access control (RBAC) using **JWT** and **OAuth2**.
-- Deployed scalable infrastructure on **AWS (EC2, S3)** with automated CI/CD pipelines via GitHub Actions.
-      `);
+      // ⭐ 1. Get the auth token
+      const token = await getToken();
 
+      // ⭐ 2. Make the real API call
+      // (Assuming you kept the Vite proxy we set up earlier)
+      const { data } = await axios.post(
+        "http://localhost:5000/api/project-bullets",
+        {
+          projectName: title, // Map frontend 'title' to backend 'projectName'
+          techStack: stack, // Map frontend 'stack' to backend 'techStack'
+          description: description,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+
+      // ⭐ 3. Set the real AI response
+      if (data.success) {
+        setResult(data.data);
+        toast.success("Project bullets generated!");
+      }
+    } catch (err) {
+      console.error("Error calling backend:", err);
+      toast.error(
+        err.response?.data?.message || "Failed to generate bullets. Try again.",
+      );
+    } finally {
       setLoading(false);
-      toast.success("Project bullets generated!");
-    }, 2000);
+    }
   };
 
   const copyToClipboard = () => {
