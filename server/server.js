@@ -7,6 +7,10 @@ import resumeRoutes from "./routes/resume.routes.js";
 import activityRoutes from "./routes/activity.routes.js";
 import userRoutes from "./routes/user.routes.js";
 import subscriptionRoutes from "./routes/subscription.routes.js";
+import analyticsRoutes from "./routes/analytics.routes.js";
+import coverLetterRoutes from "./routes/coverLetter.routes.js";
+import projectBulletsRoutes from "./routes/projectBullets.routes.js";
+import jobFitRoutes from "./routes/jobFit.routes.js";
 
 dotenv.config();
 
@@ -24,7 +28,7 @@ app.use(
 app.use(express.json());
 
 app.use("/api/subscription", subscriptionRoutes);
-
+app.use("/api/analytics", analyticsRoutes);
 app.use("/api/user", userRoutes);
 app.use("/api/activities", activityRoutes);
 
@@ -54,6 +58,15 @@ app.get("/api/protected", requireAuthMiddleware, (req, res) => {
 
 /* ✅ Resume Routes */
 app.use("/api/resume", resumeRoutes);
+
+/* ✅ Cover Letter Routes */
+app.use("/api/cover-letter", coverLetterRoutes);
+
+/* ✅ Project Bullets Routes */
+app.use("/api/project-bullets", projectBulletsRoutes);
+
+/* ✅ Job Fit Routes */
+app.use("/api/job-fit", jobFitRoutes);
 
 /* ✅ Server Boot */
 const PORT = process.env.PORT || 5000;
