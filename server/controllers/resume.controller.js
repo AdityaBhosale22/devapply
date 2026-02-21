@@ -2,6 +2,7 @@ import { extractTextFromPDF } from "../utils/pdfParser.js";
 import { analyzeResumeWithAI } from "../services/ai.service.js";
 import { deductCredits } from "../utils/credits.js";
 import { logActivity } from "../utils/activityLogger.js";
+import { validateSubscription } from "../utils/subscriptionGuard.js";
 
 export const analyzeResume = async (req, res) => {
   try {
@@ -19,6 +20,15 @@ export const analyzeResume = async (req, res) => {
     const aiResult = await analyzeResumeWithAI(resumeText);
 
     const { userId } = req.auth();
+
+    const subCheck = await validateSubscription(userId);
+
+    if (!subCheck.valid) {
+      return res.status(403).json({
+        success: false,
+        message: "Subscription expired. Please upgrade 😏",
+      });
+    }
 
     await deductCredits(userId, 5);
 
