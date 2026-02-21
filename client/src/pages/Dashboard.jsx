@@ -72,82 +72,76 @@ export default function Dashboard() {
   });
   const [loading, setLoading] = useState(true);
   const { getToken, isLoaded } = useAuth();
+  const [analytics, setAnalytics] = useState(null);
 
-const fetchDashboardData = async () => {
+  const fetchDashboardData = async () => {
     try {
       const token = await getToken();
-      if (!token) {
-        console.warn("No authentication token found");
-        return;
-      }
+      if (!token) return;
 
       const headers = { Authorization: `Bearer ${token}` };
       const baseUrl = import.meta.env.VITE_BASE_URL || "http://localhost:5000";
 
       console.log(`Fetching data from: ${baseUrl}`);
 
-      // Use allSettled so one failure doesn't break the entire dashboard
-      const [activitiesResult, creditsResult] = await Promise.allSettled([
-        axios.get(`${baseUrl}/api/activities`, { headers }),
-        axios.get(`${baseUrl}/api/user/credits`, { headers })
-      ]);
+      const [activitiesResult, creditsResult, planResult] =
+        await Promise.allSettled([
+          axios.get(`${baseUrl}/api/activities`, { headers }),
+          axios.get(`${baseUrl}/api/user/credits`, { headers }),
+          axios.get(`${baseUrl}/api/subscription`, { headers }), // ⭐ NEW
+        ]);
 
-      // 1. Handle Activities
+      /* Activities */
       let activityData = [];
-      if (activitiesResult.status === 'fulfilled') {
-        activityData = activitiesResult.value.data.data || []; // Adjust .data.data based on your API response structure
-        console.log("Activities fetched:", activityData);
+      if (activitiesResult.status === "fulfilled") {
+        activityData = activitiesResult.value.data.data || [];
         setActivities(activityData);
-      } else {
-        console.error("Failed to fetch activities:", activitiesResult.reason);
-        toast.error("Could not load usage history");
       }
 
-      // 2. Handle Credits
-      // let realCredits = 0;
-      // if (creditsResult.status === 'fulfilled') {
-      //   // Log the exact response to see if it's .credits, .data.credits, or .user.credits
-      //   console.log("Credits API Response:", creditsResult.value.data); 
-        
-      //   // Safety check for different response structures
-      //   realCredits = creditsResult.value.data.credits || creditsResult.value.data.credits_remaining || 0;
-      // } else {
-      //   console.error("Failed to fetch credits:", creditsResult.reason);
-      // }
+      /* Credits */
+      let realCredits = 0;
+      if (creditsResult.status === "fulfilled") {
+        realCredits = creditsResult.value.data.data?.credits_remaining || 0;
+      }
 
-    let realCredits = 0;
+      /* Plan */
+      let realPlan = "Free Tier";
 
-if (creditsResult.status === "fulfilled") {
-  console.log("Credits API Response:", creditsResult.value.data);
+      if (planResult.status === "fulfilled") {
+        realPlan = planResult.value.data.data?.plan_type || "free";
+      }
 
-  realCredits =
-    creditsResult.value.data.data?.credits_remaining || 0;
-}
-
-
-      // 3. Prepare Chart Data
+      /* Chart */
       const featureStats = activityData.reduce((acc, activity) => {
-        const name = activity.feature; 
-        acc[name] = (acc[name] || 0) + 1;
+        acc[activity.feature] = (acc[activity.feature] || 0) + 1;
         return acc;
       }, {});
 
-      const formattedChartData = Object.keys(featureStats).map((feature) => ({
-        feature: formatFeature(feature),
-        usage: featureStats[feature],
+      const formattedChartData = Object.keys(featureStats).map((f) => ({
+        feature: formatFeature(f),
+        usage: featureStats[f],
       }));
+
       setChartData(formattedChartData);
 
-      // 4. Update Stats State
+      const formatPlan = (plan) => {
+        const map = {
+          free: "Free Tier",
+          pro: "Pro Plan",
+          premium: "Premium Plan",
+        };
+
+        return map[plan] || "Free Tier";
+      };
+
+      /* Stats (REAL DATA ⭐) */
       setStats({
         totalAnalyses: activityData.length,
-        creditsRemaining: realCredits, 
-        planType: "Free Tier", 
+        creditsRemaining: realCredits,
+        planType: formatPlan(realPlan), // ⭐ DYNAMIC
       });
-
     } catch (err) {
-      console.error("Critical Dashboard Error:", err);
-      toast.error("Failed to connect to server");
+      console.error("Dashboard Error:", err);
     } finally {
       setLoading(false);
     }
