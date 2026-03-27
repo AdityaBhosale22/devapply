@@ -20,7 +20,9 @@ export default function ResumeAnalyzer() {
   const [file, setFile] = useState(null);
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState(null);
-  const [activities, setActivities] = useState([]);
+  // We fetch activity history for side-effects, but the page doesn't render it.
+  // Use an empty slot to avoid `no-unused-vars` for `activities`.
+  const [, setActivities] = useState([]);
 
   const { getToken } = useAuth();
 
@@ -221,7 +223,7 @@ export default function ResumeAnalyzer() {
 
 /* Reusable UI Components */
 
-const Section = ({ title, content, icon: Icon, color }) => {
+const Section = ({ title, content, icon: IconComponent, color }) => {
   const colorStyles = {
     indigo: "text-indigo-600 bg-indigo-50",
     green: "text-green-600 bg-green-50",
@@ -236,7 +238,7 @@ const Section = ({ title, content, icon: Icon, color }) => {
         <div
           className={`p-2 rounded-lg ${colorStyles[color] || "bg-slate-100"}`}
         >
-          <Icon size={20} />
+          {React.createElement(IconComponent, { size: 20 })}
         </div>
         <h2 className="font-bold text-slate-800 text-lg">{title}</h2>
       </div>
@@ -245,7 +247,7 @@ const Section = ({ title, content, icon: Icon, color }) => {
   );
 };
 
-const ListSection = ({ title, items, icon: Icon, color }) => {
+const ListSection = ({ title, items, icon: IconComponent, color }) => {
   const colorStyles = {
     indigo: "text-indigo-600 bg-indigo-50 border-indigo-100",
     green: "text-emerald-600 bg-emerald-50 border-emerald-100",
@@ -270,7 +272,7 @@ const ListSection = ({ title, items, icon: Icon, color }) => {
         <div
           className={`p-2 rounded-lg ${colorStyles[color]?.split(" ").slice(0, 2).join(" ")}`}
         >
-          <Icon size={20} />
+          {React.createElement(IconComponent, { size: 20 })}
         </div>
         <h2 className="font-bold text-slate-800 text-lg">{title}</h2>
       </div>

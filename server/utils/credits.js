@@ -1,21 +1,35 @@
 // utils/credits.js
-import pg from 'pg';
+import pg from "pg";
+
 const { Pool } = pg;
 
+// Keep this util consistent with the rest of the backend:
+// - credits middleware checks `credits_remaining`
+// - subscription upgrades write `credits_remaining`
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
   ssl: true, // Neon requires SSL
 });
 
+const DEFAULT_CREDITS = 100;
+
 export const getUserCredits = async (userId) => {
   try {
     const result = await pool.query(
-      'SELECT credits FROM users WHERE id = $1',
+      "SELECT credits_remaining FROM users WHERE id = $1",
       [userId]
     );
-    
-    if (result.rows.length === 0) return 0;
-    return result.rows[0].credits;
+
+    // If user row doesn't exist yet, initialize credits so endpoints still work.
+    if (result.rows.length === 0) {
+      await pool.query(
+        "INSERT INTO users (id, credits_remaining) VALUES ($1, $2)",
+        [userId, DEFAULT_CREDITS]
+      );
+      return DEFAULT_CREDITS;
+    }
+
+    return Number(result.rows[0].credits_remaining ?? 0);
   } catch (error) {
     console.error("Error fetching credits:", error);
     return 0;
@@ -25,7 +39,7 @@ export const getUserCredits = async (userId) => {
 export const deductCredits = async (userId, amount) => {
   try {
     await pool.query(
-      'UPDATE users SET credits = credits - $1 WHERE id = $2',
+      "UPDATE users SET credits_remaining = GREATEST(0, COALESCE(credits_remaining, 0) - $1) WHERE id = $2",
       [amount, userId]
     );
   } catch (error) {

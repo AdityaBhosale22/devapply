@@ -88,7 +88,7 @@ export default function Usage() {
 
       // 2. Process Credits
       if (creditsRes.status === 'fulfilled') {
-        setCreditsRemaining(creditsRes.value.data.credits || 0);
+        setCreditsRemaining(creditsRes.value.data.data?.credits_remaining || 0);
       }
 
       // 3. Process Recent Activity
@@ -318,11 +318,11 @@ export default function Usage() {
 }
 
 // Reusable Stats Card
-const Card = ({ title, value, icon: Icon, subtext, color }) => (
+const Card = ({ title, value, icon: IconComponent, subtext }) => (
   <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between">
     <div>
       <div className="flex items-center gap-2 mb-2 text-slate-500">
-        <Icon size={18} />
+        {React.createElement(IconComponent, { size: 18 })}
         <span className="text-sm font-medium">{title}</span>
       </div>
       <h2 className="text-3xl font-bold text-slate-900">{value}</h2>

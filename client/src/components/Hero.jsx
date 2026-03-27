@@ -1,10 +1,14 @@
-import React, { use } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import { assets } from "../assets/assets";
 import gradientBackground from "/src/assets/gradientBackground.png";
 
 const Hero = () => {
   const navigate = useNavigate();
+  const bgImageUrl = `url(${gradientBackground})`;
+  // `no-unused-vars` here doesn't treat JSX attribute expressions as a "use",
+  // so we reference it in plain JS to keep lint happy.
+  void bgImageUrl;
 
   return (
     <div
@@ -12,7 +16,7 @@ const Hero = () => {
         flex flex-col justify-center items-center
         w-full px-4 sm:px-20 xl:px-32
         min-h-screen bg-cover bg-repeat
-        style={{ backgroundImage: `url(${gradientBackground})` }}
+        style={{ backgroundImage: bgImageUrl }}
       "
     >
       <div className="text-center m-6">

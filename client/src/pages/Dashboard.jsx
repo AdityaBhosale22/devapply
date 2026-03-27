@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import axios from "axios";
 import { useAuth } from "@clerk/clerk-react";
 import {
@@ -23,21 +23,21 @@ import {
   Tooltip,
   CartesianGrid,
 } from "recharts";
-import toast from "react-hot-toast";
+// toast is intentionally not used on this dashboard page (keeps lint clean).
 
 // Helper to map feature names to icons/colors
 const getFeatureStyle = (featureName) => {
   const styles = {
-    "Resume Analyzer": { icon: FileText, color: "text-blue-600 bg-blue-100" },
-    "Cover Letter Generator": {
+    resume_analyzer: { icon: FileText, color: "text-blue-600 bg-blue-100" },
+    cover_letter: {
       icon: PenTool,
       color: "text-purple-600 bg-purple-100",
     },
-    "Job Fit Analyzer": {
+    job_fit: {
       icon: Target,
       color: "text-emerald-600 bg-emerald-100",
     },
-    "Project Bullet Generator": {
+    project_bullets: {
       icon: Code,
       color: "text-orange-600 bg-orange-100",
     },
@@ -72,9 +72,8 @@ export default function Dashboard() {
   });
   const [loading, setLoading] = useState(true);
   const { getToken, isLoaded } = useAuth();
-  const [analytics, setAnalytics] = useState(null);
 
-  const fetchDashboardData = async () => {
+  const fetchDashboardData = useCallback(async () => {
     try {
       const token = await getToken();
       if (!token) return;
@@ -145,13 +144,13 @@ export default function Dashboard() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [getToken]);
 
   useEffect(() => {
     if (isLoaded) {
       fetchDashboardData();
     }
-  }, [isLoaded]);
+  }, [isLoaded, fetchDashboardData]);
 
   if (loading) {
     return (

@@ -43,7 +43,7 @@ Make it concise, confident, and modern.
     // Save activity
     await logActivity({
       userId,
-      feature: "Cover Letter",
+      feature: "cover_letter",
       prompt: `${role} at ${company}`,
       result: aiResponse,
       creditsUsed: 3,

@@ -15,13 +15,15 @@ export const analyzeResume = async (req, res) => {
       });
     }
 
-    const resumeText = await extractTextFromPDF(req.file.buffer);
+    // FIX 1 — call auth once
+    const { userId, sessionClaims } = req.auth();
 
-    const aiResult = await analyzeResumeWithAI(resumeText);
-
-    const { userId } = req.auth();
-
-    const subCheck = await validateSubscription(userId);
+    // FIX 2 — validate subscription properly
+    const subCheck = await validateSubscription(
+   userId,
+   sessionClaims,
+   "u:resume_analyzer"
+);
 
     if (!subCheck.valid) {
       return res.status(403).json({
@@ -30,12 +32,19 @@ export const analyzeResume = async (req, res) => {
       });
     }
 
+    console.log("User ID:", userId);
+    console.log("Plan:", sessionClaims?.pla);
+
+    const resumeText = await extractTextFromPDF(req.file.buffer);
+
+    const aiResult = await analyzeResumeWithAI(resumeText);
+
     await deductCredits(userId, 5);
 
     await logActivity({
-      userId: req.auth()?.userId,
+      userId,
       feature: "resume_analyzer",
-      prompt: resumeText.slice(0, 500), // prevent huge DB storage
+      prompt: resumeText.slice(0, 500),
       result: JSON.stringify(aiResult),
       creditsUsed: 5,
     });
@@ -47,6 +56,7 @@ export const analyzeResume = async (req, res) => {
 
   } catch (error) {
     console.error(error);
+
     res.status(500).json({
       success: false,
       message: "Resume analysis failed",

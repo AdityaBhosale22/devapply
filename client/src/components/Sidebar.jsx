@@ -45,7 +45,7 @@ export default function Sidebar({ sidebar, setSidebar }) {
         />
         <h1 className="mt-1 text-center ">{user.fullName}</h1>
         <div className="px-6 mt-5 text-gray-600 font-medium ">
-          {navItems.map(({ to, label, icon: Icon }) => (
+          {navItems.map(({ to, label, icon: IconComponent }) => (
             <NavLink
               key={to}
               to={to}
@@ -62,7 +62,9 @@ export default function Sidebar({ sidebar, setSidebar }) {
             >
               {({ isActive }) => (
                 <>
-                  <Icon className={`w-4 h-4 ${isActive ? "text-white" : ""}`} />
+                  {React.createElement(IconComponent, {
+                    className: `w-4 h-4 ${isActive ? "text-white" : ""}`,
+                  })}
                   {label}
                 </>
               )}

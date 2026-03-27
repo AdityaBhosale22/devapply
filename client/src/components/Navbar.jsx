@@ -7,7 +7,7 @@ import { useClerk, useUser, UserButton } from "@clerk/clerk-react";
 const Navbar = () => {
   const navigate = useNavigate();
   const { user } = useUser();
-  const { openSignIn, openSignUp } = useClerk();
+  const { openSignIn } = useClerk();
 
   return (
     <div
