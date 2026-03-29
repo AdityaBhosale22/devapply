@@ -11,13 +11,13 @@ const Navbar = () => {
 
   return (
     <div
-      className="fixed z-5 w-full backdrop-blur-2xl flex justify-between 
-    items-center py-3 px-4 sm:px-20 xl:px-32 "
+      className="fixed top-0 z-50 w-full glass flex justify-between 
+    items-center py-4 px-6 sm:px-20 xl:px-32 transition-all duration-300"
     >
       <img
         src={assets.logo}
         alt="logo"
-        className="w-32 sm:w-48 object-contain cursor-pointer"
+        className="w-32 sm:w-40 object-contain cursor-pointer drop-shadow-sm"
         onClick={() => {
           navigate("/");
         }}
@@ -27,14 +27,12 @@ const Navbar = () => {
         <UserButton />
       ) : (
         <button
-          onClick={openSignIn} className="flex items-center gap-2 rounded-full text-sm
-                cursor-pointer bg-amber-800 text-white py-2.5 px-10"
+          onClick={openSignIn} className="flex items-center gap-2 rounded-full text-sm font-medium
+                cursor-pointer bg-primary text-white py-2.5 px-8 hover-3d shadow-3d"
         >
           Get Started <ArrowRight className="w-4 h-4" />
         </button>
       )}
-
-
     </div>
   );
 };

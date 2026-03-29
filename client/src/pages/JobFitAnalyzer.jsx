@@ -48,11 +48,17 @@ export default function JobFitAnalyzer() {
       );
 
       if (data.success) {
-        // Parse the Gemini JSON string
-        const cleanedString = data.data.replace(/```json|```/g, "").trim();
-        const parsedData = JSON.parse(cleanedString);
-        
-        setResult(parsedData);
+        const payload = data.data;
+
+        if (payload && typeof payload === "object") {
+          setResult(payload);
+        } else if (typeof payload === "string") {
+          const cleanedString = payload.replace(/```json|```/g, "").trim();
+          setResult(JSON.parse(cleanedString));
+        } else {
+          throw new Error("Unexpected response format from server");
+        }
+
         toast.success("Job fit analysis complete!");
       }
 
@@ -71,16 +77,18 @@ export default function JobFitAnalyzer() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50/50 p-6 md:p-12">
+    <div className="min-h-screen bg-bg-light dark:bg-bg-dark p-6 md:p-12 transition-colors duration-300">
       <div className="max-w-6xl mx-auto space-y-8">
         
         {/* Header */}
         <div className="text-center md:text-left space-y-2">
-          <h1 className="text-3xl font-bold text-slate-900 tracking-tight flex items-center gap-3">
-            <Target className="text-indigo-600" /> 
+          <h1 className="text-3xl font-bold text-text-light dark:text-white tracking-tight flex items-center justify-center md:justify-start gap-3">
+            <div className="p-2 bg-primary/10 rounded-xl">
+              <Target className="text-primary" size={28} /> 
+            </div>
             Job Fit Analyzer
           </h1>
-          <p className="text-slate-500 text-lg max-w-2xl">
+          <p className="text-gray-500 dark:text-gray-400 text-lg max-w-2xl mt-2">
             Upload your resume and paste a job description to see how well you match the role.
           </p>
         </div>
@@ -89,14 +97,14 @@ export default function JobFitAnalyzer() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           
           {/* Card 1: Resume Upload (Restored!) */}
-          <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 flex flex-col h-full">
-            <h3 className="font-semibold text-slate-800 mb-4 flex items-center gap-2">
-              <span className="bg-indigo-100 text-indigo-700 w-6 h-6 rounded-full flex items-center justify-center text-xs">1</span>
+          <div className="glass-panel p-6 flex flex-col h-full">
+            <h3 className="font-semibold text-text-light dark:text-white mb-4 flex items-center gap-2">
+              <span className="bg-primary/20 text-primary w-6 h-6 rounded-full flex items-center justify-center text-xs">1</span>
               Upload Resume
             </h3>
             <div className={`
               flex-grow relative group border-2 border-dashed rounded-xl p-8 transition-all duration-300 flex flex-col items-center justify-center text-center
-              ${file ? "border-indigo-500 bg-indigo-50/30" : "border-slate-300 hover:border-indigo-400 hover:bg-slate-50"}
+              ${file ? "border-primary bg-primary/5 dark:bg-primary/20" : "border-gray-300 dark:border-gray-600 hover:border-primary hover:bg-gray-50/50 dark:hover:bg-gray-800/30"}
             `}>
               <input
                 type="file"
@@ -104,25 +112,25 @@ export default function JobFitAnalyzer() {
                 onChange={(e) => setFile(e.target.files[0])}
                 className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
               />
-              <div className={`p-3 rounded-full mb-3 ${file ? "bg-indigo-100 text-indigo-600" : "bg-slate-100 text-slate-400"}`}>
+              <div className={`p-3 rounded-full mb-3 ${file ? "bg-primary/20 text-primary" : "bg-gray-100 dark:bg-gray-800 text-gray-400 group-hover:bg-primary/10 group-hover:text-primary"} transition-colors`}>
                 {file ? <FileText size={24} /> : <UploadCloud size={24} />}
               </div>
-              <p className="text-sm font-medium text-slate-700">
+              <p className="text-sm font-medium text-text-light dark:text-white">
                 {file ? file.name : "Drop PDF here or click to upload"}
               </p>
             </div>
           </div>
 
           {/* Card 2: Job Description Textarea */}
-          <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 flex flex-col h-full">
-            <h3 className="font-semibold text-slate-800 mb-4 flex items-center gap-2">
-               <span className="bg-indigo-100 text-indigo-700 w-6 h-6 rounded-full flex items-center justify-center text-xs">2</span>
+          <div className="glass-panel p-6 flex flex-col h-full">
+            <h3 className="font-semibold text-text-light dark:text-white mb-4 flex items-center gap-2">
+               <span className="bg-primary/20 text-primary w-6 h-6 rounded-full flex items-center justify-center text-xs">2</span>
                Paste Job Description
             </h3>
             <textarea
               value={jd}
               onChange={(e) => setJd(e.target.value)}
-              className="flex-grow w-full p-4 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all placeholder:text-slate-400 resize-none text-sm"
+              className="flex-grow w-full p-4 bg-white/50 dark:bg-black/20 border border-gray-200 dark:border-gray-700 rounded-xl text-text-light dark:text-white focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all placeholder:text-gray-400 dark:placeholder:text-gray-600 resize-none text-sm"
               placeholder="Paste the full job description text here..."
             />
           </div>
@@ -134,10 +142,10 @@ export default function JobFitAnalyzer() {
             onClick={handleAnalyze}
             disabled={loading}
             className={`
-              flex items-center gap-2 px-8 py-3.5 rounded-full font-medium text-white text-lg transition-all transform active:scale-95 shadow-lg
+              flex items-center gap-2 px-8 py-3.5 rounded-full font-medium text-white text-lg transition-all transform shadow-3d hover-3d
               ${loading 
-                ? "bg-slate-400 cursor-not-allowed" 
-                : "bg-indigo-600 hover:bg-indigo-700 shadow-indigo-200"}
+                ? "bg-gray-400 dark:bg-gray-600 cursor-not-allowed shadow-none" 
+                : "bg-primary hover:bg-primary-dark"}
             `}
           >
             {loading ? (
@@ -158,19 +166,19 @@ export default function JobFitAnalyzer() {
         {result && (
           <div className="space-y-6 animate-in fade-in slide-in-from-bottom-6 duration-700">
             {/* Score Banner */}
-            <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-8 flex flex-col md:flex-row items-center justify-between gap-6">
+            <div className="glass-panel p-8 flex flex-col md:flex-row items-center justify-between gap-6">
               <div className="text-center md:text-left">
-                <h2 className="text-xl font-bold text-slate-900">Match Score</h2>
-                <p className="text-slate-500 text-sm mt-1">Based on keyword matching and semantic analysis</p>
+                <h2 className="text-xl font-bold text-text-light dark:text-white">Match Score</h2>
+                <p className="text-gray-500 dark:text-gray-400 text-sm mt-1">Based on keyword matching and semantic analysis</p>
               </div>
               
               <div className="flex items-center gap-6">
                 <div className={`
-                  relative w-32 h-32 rounded-full flex items-center justify-center border-8 
+                  relative w-32 h-32 rounded-full flex items-center justify-center border-8 shadow-inner bg-white dark:bg-bg-dark
                   ${getScoreColor(result.score)}
                 `}>
                   <div className="text-center">
-                    <span className="text-3xl font-bold text-slate-800">{result.score}%</span>
+                    <span className="text-3xl font-bold text-text-light dark:text-white">{result.score}%</span>
                   </div>
                 </div>
               </div>
@@ -178,28 +186,28 @@ export default function JobFitAnalyzer() {
 
             {/* Comparison Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
-                <div className="flex items-center gap-2 mb-4 text-emerald-700">
+              <div className="glass-panel p-6">
+                <div className="flex items-center gap-2 mb-4 text-emerald-600">
                   <CheckCircle2 size={20} />
-                  <h3 className="font-bold">Matched Skills</h3>
+                  <h3 className="font-bold text-text-light dark:text-white">Matched Skills</h3>
                 </div>
                 <div className="flex flex-wrap gap-2">
                   {result.matchedSkills?.map((skill, idx) => (
-                    <span key={idx} className="px-3 py-1 bg-emerald-50 text-emerald-700 text-sm font-medium rounded-full border border-emerald-100">
+                    <span key={idx} className="px-3 py-1 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-sm font-medium rounded-full border border-emerald-500/20">
                       {skill}
                     </span>
                   ))}
                 </div>
               </div>
 
-              <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
-                <div className="flex items-center gap-2 mb-4 text-rose-600">
+              <div className="glass-panel p-6">
+                <div className="flex items-center gap-2 mb-4 text-rose-500">
                   <XCircle size={20} />
-                  <h3 className="font-bold">Missing Skills</h3>
+                  <h3 className="font-bold text-text-light dark:text-white">Missing Skills</h3>
                 </div>
                 <div className="flex flex-wrap gap-2">
                   {result.missingSkills?.map((skill, idx) => (
-                    <span key={idx} className="px-3 py-1 bg-rose-50 text-rose-700 text-sm font-medium rounded-full border border-rose-100">
+                    <span key={idx} className="px-3 py-1 bg-rose-500/10 text-rose-600 dark:text-rose-400 text-sm font-medium rounded-full border border-rose-500/20">
                       {skill}
                     </span>
                   ))}
@@ -208,15 +216,15 @@ export default function JobFitAnalyzer() {
             </div>
 
             {/* AI Suggestions */}
-            <div className="bg-indigo-50 border border-indigo-100 rounded-2xl p-6">
-              <div className="flex items-center gap-2 mb-4 text-indigo-700">
+            <div className="glass-panel bg-primary/5 dark:bg-primary/10 border-primary/20 p-6">
+              <div className="flex items-center gap-2 mb-4 text-primary">
                 <Lightbulb size={20} />
-                <h3 className="font-bold">How to Improve Your Odds</h3>
+                <h3 className="font-bold text-text-light dark:text-white">How to Improve Your Odds</h3>
               </div>
               <ul className="space-y-3">
                 {result.suggestions?.map((suggestion, idx) => (
-                  <li key={idx} className="flex items-start gap-3 text-slate-700 text-sm">
-                    <span className="mt-1.5 w-1.5 h-1.5 bg-indigo-500 rounded-full flex-shrink-0" />
+                  <li key={idx} className="flex items-start gap-3 text-gray-700 dark:text-gray-300 text-sm">
+                    <span className="mt-1.5 w-1.5 h-1.5 bg-primary rounded-full flex-shrink-0" />
                     <span className="leading-relaxed">{suggestion}</span>
                   </li>
                 ))}

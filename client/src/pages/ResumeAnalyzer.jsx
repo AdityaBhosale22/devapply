@@ -94,25 +94,28 @@ export default function ResumeAnalyzer() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50/50 p-6 md:p-12">
+    <div className="min-h-screen bg-bg-light dark:bg-bg-dark p-6 md:p-12 transition-colors duration-300">
       <div className="max-w-5xl mx-auto space-y-8">
         {/* Header Section */}
         <div className="text-center md:text-left space-y-2">
-          <h1 className="text-3xl font-bold text-slate-900 tracking-tight">
+          <h1 className="text-3xl font-bold text-text-light dark:text-white tracking-tight flex items-center justify-center md:justify-start gap-3">
+            <div className="p-2 bg-primary/10 rounded-xl">
+              <FileText className="text-primary" size={28} />
+            </div>
             Resume Analyzer
           </h1>
-          <p className="text-slate-500 max-w-2xl text-lg">
+          <p className="text-gray-500 dark:text-gray-400 max-w-2xl text-lg mt-2">
             Get instant, AI-powered feedback on your resume's strengths,
             weaknesses, and ATS compatibility.
           </p>
         </div>
 
         {/* Upload Section (Card) */}
-        <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-8 md:p-10 text-center">
+        <div className="glass-panel p-8 md:p-10 text-center">
           <div
             className={`
             relative group border-2 border-dashed rounded-xl p-10 transition-all duration-300
-            ${file ? "border-indigo-500 bg-indigo-50/30" : "border-slate-300 hover:border-indigo-400 hover:bg-slate-50"}
+            ${file ? "border-primary bg-primary/5 dark:bg-primary/20" : "border-gray-300 dark:border-gray-600 hover:border-primary hover:bg-gray-50/50 dark:hover:bg-gray-800/30"}
           `}
           >
             <input
@@ -124,16 +127,16 @@ export default function ResumeAnalyzer() {
 
             <div className="flex flex-col items-center justify-center space-y-4">
               <div
-                className={`p-4 rounded-full ${file ? "bg-indigo-100 text-indigo-600" : "bg-slate-100 text-slate-400 group-hover:bg-indigo-50 group-hover:text-indigo-500"} transition-colors`}
+                className={`p-4 rounded-full ${file ? "bg-primary/20 text-primary" : "bg-gray-100 dark:bg-gray-800 text-gray-400 group-hover:bg-primary/10 group-hover:text-primary"} transition-colors`}
               >
                 {file ? <FileText size={32} /> : <UploadCloud size={32} />}
               </div>
 
               <div className="space-y-1">
-                <p className="text-lg font-medium text-slate-700">
+                <p className="text-lg font-medium text-text-light dark:text-white">
                   {file ? file.name : "Click to upload or drag and drop"}
                 </p>
-                <p className="text-sm text-slate-400">
+                <p className="text-sm text-gray-400 dark:text-gray-500">
                   {file ? "Ready to analyze" : "PDF files only (Max 5MB)"}
                 </p>
               </div>
@@ -145,11 +148,11 @@ export default function ResumeAnalyzer() {
               onClick={handleAnalyze}
               disabled={!file || loading}
               className={`
-                flex items-center gap-2 px-8 py-3 rounded-lg font-medium text-white transition-all transform active:scale-95
+                flex items-center gap-2 px-8 py-3.5 rounded-xl font-medium text-white transition-all transform shadow-3d hover-3d
                 ${
                   loading || !file
-                    ? "bg-slate-300 cursor-not-allowed"
-                    : "bg-indigo-600 hover:bg-indigo-700 shadow-lg shadow-indigo-200"
+                    ? "bg-gray-300 dark:bg-gray-600 cursor-not-allowed shadow-none"
+                    : "bg-primary hover:bg-primary-dark"
                 }
               `}
             >
@@ -223,71 +226,71 @@ export default function ResumeAnalyzer() {
 
 const Section = ({ title, content, icon: Icon, color }) => {
   const colorStyles = {
-    indigo: "text-indigo-600 bg-indigo-50",
-    green: "text-green-600 bg-green-50",
-    amber: "text-amber-600 bg-amber-50",
-    red: "text-red-600 bg-red-50",
-    blue: "text-blue-600 bg-blue-50",
+    indigo: "text-primary bg-primary/10",
+    green: "text-emerald-500 bg-emerald-500/10",
+    amber: "text-amber-500 bg-amber-500/10",
+    red: "text-rose-500 bg-rose-500/10",
+    blue: "text-cyan-500 bg-cyan-500/10",
   };
 
   return (
-    <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 h-full">
+    <div className="glass-panel p-6 h-full">
       <div className="flex items-center gap-3 mb-4">
         <div
-          className={`p-2 rounded-lg ${colorStyles[color] || "bg-slate-100"}`}
+          className={`p-2 rounded-lg ${colorStyles[color] || "bg-gray-100 dark:bg-gray-800"}`}
         >
           <Icon size={20} />
         </div>
-        <h2 className="font-bold text-slate-800 text-lg">{title}</h2>
+        <h2 className="font-bold text-text-light dark:text-white text-lg">{title}</h2>
       </div>
-      <p className="text-slate-600 leading-relaxed">{content}</p>
+      <p className="text-gray-600 dark:text-gray-300 leading-relaxed">{content}</p>
     </div>
   );
 };
 
 const ListSection = ({ title, items, icon: Icon, color }) => {
   const colorStyles = {
-    indigo: "text-indigo-600 bg-indigo-50 border-indigo-100",
-    green: "text-emerald-600 bg-emerald-50 border-emerald-100",
-    amber: "text-amber-600 bg-amber-50 border-amber-100",
-    red: "text-rose-600 bg-rose-50 border-rose-100",
-    blue: "text-blue-600 bg-blue-50 border-blue-100",
+    indigo: "text-primary bg-primary/10",
+    green: "text-emerald-500 bg-emerald-500/10",
+    amber: "text-amber-500 bg-amber-500/10",
+    red: "text-rose-500 bg-rose-500/10",
+    blue: "text-cyan-500 bg-cyan-500/10",
   };
 
   const bulletStyles = {
-    indigo: "bg-indigo-500",
+    indigo: "bg-primary",
     green: "bg-emerald-500",
     amber: "bg-amber-500",
     red: "bg-rose-500",
-    blue: "bg-blue-500",
+    blue: "bg-cyan-500",
   };
 
   return (
     <div
-      className={`p-6 rounded-2xl border h-full ${colorStyles[color]?.split(" ")[2] || "border-slate-200"} bg-white shadow-sm`}
+      className="p-6 rounded-2xl glass-panel h-full"
     >
       <div className="flex items-center gap-3 mb-4">
         <div
-          className={`p-2 rounded-lg ${colorStyles[color]?.split(" ").slice(0, 2).join(" ")}`}
+          className={`p-2 rounded-lg ${colorStyles[color]}`}
         >
           <Icon size={20} />
         </div>
-        <h2 className="font-bold text-slate-800 text-lg">{title}</h2>
+        <h2 className="font-bold text-text-light dark:text-white text-lg">{title}</h2>
       </div>
       <ul className="space-y-3">
         {items?.map((item, idx) => (
           <li
             key={idx}
-            className="flex items-start gap-3 text-slate-600 text-sm md:text-base"
+            className="flex items-start gap-3 text-gray-600 dark:text-gray-300 text-sm md:text-base"
           >
             <span
-              className={`mt-2 w-1.5 h-1.5 rounded-full flex-shrink-0 ${bulletStyles[color] || "bg-slate-400"}`}
+              className={`mt-2 w-1.5 h-1.5 rounded-full flex-shrink-0 ${bulletStyles[color] || "bg-gray-400"}`}
             />
             <span className="leading-relaxed">{item}</span>
           </li>
         ))}
         {(!items || items.length === 0) && (
-          <li className="text-slate-400 italic text-sm">No items found.</li>
+          <li className="text-gray-400 dark:text-gray-500 italic text-sm">No items found.</li>
         )}
       </ul>
     </div>

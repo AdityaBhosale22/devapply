@@ -23,15 +23,15 @@ const ActivityItem = ({ item }) => {
   };
 
   return (
-    <div className="p-4 max-w-5xl text-sm bg-white border border-gray-200 rounded-lg">
+    <div className="p-4 max-w-5xl text-sm glass-panel text-text-light dark:text-white !bg-white/80 dark:!bg-black/20 hover:!bg-white dark:hover:!bg-black/30 transition-colors duration-200">
       <div className="flex items-center justify-between gap-4">
         <div
           onClick={() => setExpanded(!expanded)}
           className="flex-1 cursor-pointer"
         >
-          <h2>{item.prompt}</h2>
+          <h2 className="font-medium text-base">{item.prompt}</h2>
 
-          <p className="text-gray-500">
+          <p className="text-gray-500 dark:text-gray-400 mt-1">
             {item.feature} •{" "}
             {new Date(item.created_at).toLocaleDateString()}
           </p>
@@ -43,15 +43,15 @@ const ActivityItem = ({ item }) => {
               e.stopPropagation();
               downloadContent();
             }}
-            className="flex items-center gap-1 bg-green-100 hover:bg-green-200 text-green-700 px-3 py-1 rounded-lg transition-colors"
+            className="flex items-center gap-1 bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 px-3 py-1.5 rounded-lg transition-colors cursor-pointer"
           >
-            <Download className="w-3 h-3" />
-            <span className="text-xs">Download</span>
+            <Download className="w-3.5 h-3.5" />
+            <span className="text-xs font-medium">Download</span>
           </button>
 
           <button
             onClick={() => setExpanded(!expanded)}
-            className="bg-blue-100 border border-blue-200 text-blue-700 px-4 py-1 rounded-full capitalize"
+            className="bg-primary/10 border border-primary/20 text-primary px-4 py-1.5 rounded-full capitalize text-xs font-semibold"
           >
             {item.feature}
           </button>
@@ -59,8 +59,8 @@ const ActivityItem = ({ item }) => {
       </div>
 
       {expanded && (
-        <div className="mt-3 text-sm text-slate-700">
-          <div className="reset-tw">
+        <div className="mt-4 p-4 rounded-xl bg-gray-50/50 dark:bg-gray-800/30 text-sm text-gray-700 dark:text-gray-300">
+          <div className="prose prose-sm dark:prose-invert max-w-none">
             <Markdown>{item.result}</Markdown>
           </div>
         </div>

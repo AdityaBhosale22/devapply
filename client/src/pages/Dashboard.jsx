@@ -155,23 +155,25 @@ export default function Dashboard() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-slate-50/50">
-        <Loader2 className="animate-spin text-indigo-600" size={32} />
+      <div className="min-h-screen flex items-center justify-center bg-bg-light dark:bg-bg-dark">
+        <Loader2 className="animate-spin text-primary" size={32} />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-slate-50/50 p-6 md:p-12">
+    <div className="min-h-screen bg-bg-light dark:bg-bg-dark p-6 md:p-12 transition-colors duration-300">
       <div className="max-w-6xl mx-auto space-y-8">
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div className="space-y-1">
-            <h1 className="text-3xl font-bold text-slate-900 tracking-tight flex items-center gap-3">
-              <LayoutDashboard className="text-indigo-600" />
+            <h1 className="text-3xl font-bold text-text-light dark:text-white tracking-tight flex items-center gap-3">
+              <div className="p-2 bg-primary/10 rounded-xl">
+                <LayoutDashboard className="text-primary" size={28} />
+              </div>
               Dashboard
             </h1>
-            <p className="text-slate-500 text-lg">
+            <p className="text-gray-500 dark:text-gray-400 text-lg">
               Welcome back! Here's an overview of your career optimization.
             </p>
           </div>
@@ -180,46 +182,46 @@ export default function Dashboard() {
         {/* Stats Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {/* Total Analyses */}
-          <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between hover:shadow-md transition-shadow">
+          <div className="glass-panel p-6 flex items-center justify-between hover-3d pointer-events-none sm:pointer-events-auto">
             <div>
-              <p className="text-sm font-medium text-slate-500 mb-1">
+              <p className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">
                 Total Activities
               </p>
-              <h2 className="text-3xl font-bold text-slate-900">
+              <h2 className="text-3xl font-bold text-text-light dark:text-white">
                 {stats.totalAnalyses}
               </h2>
             </div>
-            <div className="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center">
+            <div className="w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center">
               <Activity size={24} />
             </div>
           </div>
 
           {/* Active Plan */}
-          <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between hover:shadow-md transition-shadow">
+          <div className="glass-panel p-6 flex items-center justify-between hover-3d pointer-events-none sm:pointer-events-auto">
             <div>
-              <p className="text-sm font-medium text-slate-500 mb-1">
+              <p className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">
                 Current Plan
               </p>
-              <h2 className="text-3xl font-bold text-slate-900">
+              <h2 className="text-3xl font-bold text-text-light dark:text-white">
                 {stats.planType}
               </h2>
             </div>
-            <div className="w-12 h-12 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center">
+            <div className="w-12 h-12 rounded-xl bg-purple-500/10 text-purple-500 flex items-center justify-center">
               <CreditCard size={24} />
             </div>
           </div>
 
           {/* Credits Remaining */}
-          <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between hover:shadow-md transition-shadow">
+          <div className="glass-panel p-6 flex items-center justify-between hover-3d pointer-events-none sm:pointer-events-auto">
             <div>
-              <p className="text-sm font-medium text-slate-500 mb-1">
+              <p className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">
                 Credits Left
               </p>
-              <h2 className="text-3xl font-bold text-indigo-600">
+              <h2 className="text-3xl font-bold text-primary">
                 {stats.creditsRemaining}
               </h2>
             </div>
-            <div className="w-12 h-12 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center">
+            <div className="w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center">
               <Zap size={24} />
             </div>
           </div>
@@ -228,10 +230,10 @@ export default function Dashboard() {
         {/* Charts & Activity Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Feature Usage Chart */}
-          <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 flex flex-col">
+          <div className="glass-panel p-6 flex flex-col">
             <div className="flex items-center gap-2 mb-6">
-              <BarChart3 className="text-slate-400" size={20} />
-              <h2 className="text-xl font-bold text-slate-800">
+              <BarChart3 className="text-gray-400" size={20} />
+              <h2 className="text-xl font-bold text-text-light dark:text-white">
                 Feature Usage
               </h2>
             </div>
@@ -243,30 +245,32 @@ export default function Dashboard() {
                     strokeDasharray="3 3"
                     vertical={false}
                     stroke="#E2E8F0"
+                    opacity={0.3}
                   />
                   <XAxis
                     dataKey="feature"
                     axisLine={false}
                     tickLine={false}
-                    tick={{ fill: "#64748B", fontSize: 12 }}
+                    tick={{ fill: "#94A3B8", fontSize: 12 }}
                     dy={10}
                   />
                   <YAxis
                     axisLine={false}
                     tickLine={false}
-                    tick={{ fill: "#64748B", fontSize: 12 }}
+                    tick={{ fill: "#94A3B8", fontSize: 12 }}
                   />
                   <Tooltip
-                    cursor={{ fill: "#F1F5F9" }}
+                    cursor={{ fill: "rgba(99, 102, 241, 0.05)" }}
                     contentStyle={{
-                      borderRadius: "8px",
-                      border: "none",
-                      boxShadow: "0 4px 6px -1px rgb(0 0 0 / 0.1)",
+                      borderRadius: "12px",
+                      border: "1px solid rgba(255,255,255,0.1)",
+                      background: "rgba(255,255,255,0.9)",
+                      boxShadow: "0 10px 15px -3px rgba(0, 0, 0, 0.1)",
                     }}
                   />
                   <Bar
                     dataKey="usage"
-                    fill="#4F46E5"
+                    fill="#6366f1"
                     radius={[6, 6, 0, 0]}
                     barSize={40}
                   />
@@ -276,15 +280,15 @@ export default function Dashboard() {
           </div>
 
           {/* Recent Activity Feed */}
-          <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden flex flex-col">
-            <div className="p-6 border-b border-slate-100 flex items-center gap-2">
-              <Clock className="text-slate-400" size={20} />
-              <h2 className="font-bold text-slate-800 text-xl">
+          <div className="glass-panel overflow-hidden flex flex-col">
+            <div className="p-6 border-b border-gray-200/50 dark:border-gray-700/50 flex items-center gap-2">
+              <Clock className="text-gray-400" size={20} />
+              <h2 className="font-bold text-text-light dark:text-white text-xl">
                 Recent Activity
               </h2>
             </div>
 
-            <div className="divide-y divide-slate-100 overflow-y-auto max-h-[350px]">
+            <div className="divide-y divide-gray-200/50 dark:divide-gray-700/50 overflow-y-auto max-h-[350px]">
               {activities.length > 0 ? (
                 activities.slice(0, 5).map((activity) => {
                   const { icon: Icon, color } = getFeatureStyle(
@@ -293,19 +297,19 @@ export default function Dashboard() {
                   return (
                     <div
                       key={activity.id}
-                      className="p-4 hover:bg-slate-50 transition-colors flex items-center justify-between group"
+                      className="p-4 hover:bg-gray-50/50 dark:hover:bg-gray-800/30 transition-colors flex items-center justify-between group"
                     >
                       <div className="flex items-center gap-4">
                         <div
-                          className={`w-10 h-10 rounded-lg flex items-center justify-center ${color}`}
+                          className={`w-10 h-10 rounded-lg flex items-center justify-center ${color} bg-opacity-10 dark:bg-opacity-20`}
                         >
                           <Icon size={20} />
                         </div>
                         <div>
-                          <p className="font-semibold text-slate-800">
+                          <p className="font-semibold text-text-light dark:text-gray-200">
                             {formatFeature(activity.feature)}
                           </p>
-                          <p className="text-sm text-slate-500">
+                          <p className="text-sm text-gray-500 dark:text-gray-400">
                             {new Date(activity.created_at).toLocaleDateString(
                               undefined,
                               {
@@ -318,15 +322,15 @@ export default function Dashboard() {
                           </p>
                         </div>
                       </div>
-                      <span className="px-3 py-1 rounded-full text-xs font-medium bg-slate-100 text-slate-600">
+                      <span className="px-3 py-1 rounded-full text-xs font-medium bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300">
                         -{activity.credits_used} credits
                       </span>
                     </div>
                   );
                 })
               ) : (
-                <div className="p-12 text-center text-slate-500">
-                  <Activity size={32} className="text-slate-300 mx-auto mb-4" />
+                <div className="p-12 text-center text-gray-500 dark:text-gray-400">
+                  <Activity size={32} className="text-gray-300 dark:text-gray-600 mx-auto mb-4" />
                   <p>No activity yet.</p>
                 </div>
               )}

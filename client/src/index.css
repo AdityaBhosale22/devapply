@@ -1,18 +1,51 @@
 @import "tailwindcss";
-@import url('https://fonts.googleapis.com/css2?family=Zalando+Sans:ital,wght@0,200..900;1,200..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
-*{
-  font-family: 'Zalando Sans', sans-serif;
+@theme {
+  --color-primary: #6366f1;
+  --color-primary-dark: #4f46e5;
+  --color-secondary: #8b5cf6;
+  --color-accent: #06b6d4;
+  --color-bg-light: #f8fafc;
+  --color-bg-dark: #0b1020;
+  --color-surface-light: #ffffff;
+  --color-surface-dark: #1e293b;
+  --color-text-light: #0f172a;
+  --color-text-dark: #e5e7eb;
 }
 
-:root {
-  --color-primary: #ffffe3;
+* {
+  font-family: 'Inter', sans-serif;
 }
 
-.reset-tw, .reset-tw *{
-  all:revert !important;
+body {
+  @apply bg-bg-light text-text-light antialiased selection:bg-primary/20 transition-colors duration-300 dark:bg-bg-dark dark:text-text-dark;
 }
 
-.cl-drawerRoot{
+/* Base utility for Glassmorphism */
+@utility glass {
+  @apply bg-white/60 backdrop-blur-md border border-white/20 dark:bg-white/5 dark:border-white/10;
+}
+
+/* App surface utility */
+@utility glass-panel {
+  @apply bg-surface-light/80 backdrop-blur-xl border border-gray-200/50 rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:bg-surface-dark/70 dark:border-gray-700/50 dark:shadow-[0_8px_30px_rgb(0,0,0,0.2)];
+}
+
+/* Soft 3D shadow for buttons and active cards */
+@utility shadow-3d {
+  @apply shadow-[0px_4px_1px_rgba(0,0,0,0.05),0px_10px_20px_-5px_rgba(99,102,241,0.15)] border border-white/50 dark:shadow-[0px_4px_1px_rgba(255,255,255,0.05),0px_10px_20px_-5px_rgba(99,102,241,0.2)] dark:border-white/10;
+}
+
+/* Micro-interaction hover */
+@utility hover-3d {
+  @apply transition-all duration-300 hover:-translate-y-1 hover:shadow-lg active:translate-y-0 active:shadow-md cursor-pointer;
+}
+
+.reset-tw, .reset-tw * {
+  all: revert !important;
+}
+
+.cl-drawerRoot {
   z-index: 10;
 }

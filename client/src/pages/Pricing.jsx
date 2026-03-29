@@ -77,14 +77,14 @@ export default function Pricing() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-white p-10">
+    <div className="min-h-screen bg-bg-light dark:bg-bg-dark text-text-light dark:text-white p-10 transition-colors duration-300">
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <div className="text-center mb-16">
           <h1 className="text-5xl font-bold mb-4">
             Upgrade Your Experience 🚀
           </h1>
-          <p className="text-slate-400 text-lg">
+          <p className="text-gray-500 dark:text-gray-400 text-lg">
             Choose the plan that matches your ambition.
           </p>
         </div>
@@ -96,42 +96,42 @@ export default function Pricing() {
               key={plan.name}
               className={`
                 relative rounded-2xl p-8 transition-all duration-300
-                border backdrop-blur-xl
+                glass-panel hover-3d
                 ${
                   plan.highlight
-                    ? "border-indigo-500 bg-gradient-to-b from-indigo-500/10 to-slate-900 shadow-2xl shadow-indigo-500/20 scale-105"
-                    : "border-slate-800 bg-slate-900/50 hover:border-slate-600"
+                    ? "border-primary bg-primary/5 dark:bg-primary/10 shadow-lg shadow-primary/20 scale-105"
+                    : "border-gray-200/50 dark:border-gray-700/50"
                 }
               `}
             >
               {/* Recommended Badge */}
               {plan.highlight && (
                 <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                  <div className="bg-indigo-500 px-4 py-1 rounded-full text-sm font-medium flex items-center gap-1 shadow-lg shadow-indigo-500/40">
+                  <div className="bg-primary px-4 py-1 rounded-full text-white text-sm font-medium flex items-center gap-1 shadow-md shadow-primary/40">
                     <Sparkles size={14} />
                     Recommended
                   </div>
                 </div>
               )}
 
-              <h2 className="text-2xl font-bold mb-2">{plan.name}</h2>
+              <h2 className="text-2xl font-bold mb-2 text-text-light dark:text-white">{plan.name}</h2>
 
-              <div className="text-4xl font-bold mb-1">
+              <div className="text-4xl font-bold mb-1 text-text-light dark:text-white">
                 {plan.price}
-                <span className="text-base text-slate-400"> / month</span>
+                <span className="text-base text-gray-400"> / month</span>
               </div>
 
-              <p className="text-indigo-400 font-medium mb-4">{plan.credits}</p>
+              <p className="text-primary font-medium mb-4">{plan.credits}</p>
 
-              <p className="text-slate-400 mb-6">{plan.description}</p>
+              <p className="text-gray-500 dark:text-gray-400 mb-6">{plan.description}</p>
 
               <div className="space-y-3 mb-8">
                 {plan.features.map((feature) => (
                   <div
                     key={feature}
-                    className="flex items-center gap-3 text-slate-300"
+                    className="flex items-center gap-3 text-gray-600 dark:text-gray-300"
                   >
-                    <Check size={18} className="text-indigo-400" />
+                    <Check size={18} className="text-primary" />
                     <span>{feature}</span>
                   </div>
                 ))}
@@ -145,8 +145,8 @@ export default function Pricing() {
     ${loadingPlan === plan.name.toLowerCase() ? "opacity-70 cursor-not-allowed" : ""}
     ${
       plan.highlight
-        ? "bg-indigo-500 hover:bg-indigo-600 shadow-lg shadow-indigo-500/40"
-        : "bg-slate-800 hover:bg-slate-700"
+        ? "bg-primary text-white hover:bg-primary-dark shadow-3d"
+        : "bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-700"
     }
   `}
               >

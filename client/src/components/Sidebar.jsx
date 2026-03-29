@@ -30,21 +30,23 @@ export default function Sidebar({ sidebar, setSidebar }) {
   return (
     <div
       className={`
-        w-60 bg-white border-r border-gray-200 flex flex-col justify-between items-center
-        max-sm:absolute top-10 bottom-0
-        transition-all duration-300 ease-in-out
+        w-64 bg-surface-light dark:bg-surface-dark border-r border-gray-200/50 dark:border-gray-700/50 flex flex-col justify-between
+        max-sm:absolute top-10 bottom-0 z-40
+        transition-transform duration-300 ease-in-out
         ${sidebar ? "translate-x-0" : "max-sm:-translate-x-full"}
       `}
     >
       {/* Profile Section */}
-      <div className="my-7 w-full">
-        <img
-          src={user.imageUrl}
-          alt="User Avatar"
-          className="w-13 rounded-full mx-auto o"
-        />
-        <h1 className="mt-1 text-center ">{user.fullName}</h1>
-        <div className="px-6 mt-5 text-gray-600 font-medium ">
+      <div className="w-full flex-1 overflow-y-auto py-6">
+        <div className="flex flex-col items-center mb-8 px-6">
+          <img
+            src={user.imageUrl}
+            alt="User Avatar"
+            className="w-16 h-16 rounded-full object-cover shadow-sm border-2 border-primary/20"
+          />
+          <h1 className="mt-3 text-sm font-semibold text-text-light dark:text-text-dark text-center">{user.fullName}</h1>
+        </div>
+        <div className="px-4 flex flex-col gap-1">
           {navItems.map(({ to, label, icon: Icon }) => (
             <NavLink
               key={to}
@@ -52,17 +54,16 @@ export default function Sidebar({ sidebar, setSidebar }) {
               end={to === "/ai"}
               onClick={() => setSidebar(false)}
               className={({ isActive }) =>
-                `flex items-center gap-3 px-3.5 py-2.5 rounded ${
-                  {
-                    true: "bg-gradient-to-r from-[#3C81F6] to-[#9234EA] text-white",
-                    false: "hover:bg-gray-100",
-                  }[isActive]
+                `flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 text-sm font-medium ${
+                  isActive
+                    ? "bg-primary/10 text-primary dark:bg-primary/20 dark:text-primary-dark"
+                    : "text-gray-600 dark:text-gray-400 hover:bg-gray-100 hover:text-gray-900 dark:hover:bg-gray-800 dark:hover:text-gray-200"
                 }`
               }
             >
               {({ isActive }) => (
                 <>
-                  <Icon className={`w-4 h-4 ${isActive ? "text-white" : ""}`} />
+                  <Icon className={`w-5 h-5 ${isActive ? "text-primary" : "text-gray-400 dark:text-gray-500"}`} />
                   {label}
                 </>
               )}
@@ -72,33 +73,35 @@ export default function Sidebar({ sidebar, setSidebar }) {
       </div>
 
       {/* Profile & Sign Out Buttons */}
-      <div className="px-6 py-4 w-full border-t border-gray-200">
-        <div className="flex items-center justify-between">
-          <div
-            className="flex gap-2 items-center cursor-pointer"
-            onClick={() => {
-              openUserProfile();
-              setSidebar(false);
-            }}
-          >
+      <div className="p-4 w-full border-t border-gray-200/50 dark:border-gray-700/50 bg-gray-50/50 dark:bg-gray-800/20">
+        <div className="flex items-center justify-between glass-panel p-3 shadow-none border-transparent hover:border-gray-200 dark:hover:border-gray-700 rounded-xl transition-colors cursor-pointer"
+             onClick={() => {
+               openUserProfile();
+               setSidebar(false);
+             }}
+        >
+          <div className="flex gap-3 items-center">
             <img
               src={user.imageUrl}
               alt={user.fullName}
-              className="w-8 h-8 rounded-full object-cover"
+              className="w-9 h-9 rounded-full object-cover"
             />
-            <div>
-              <h1 className="text-sm font-medium">{user.fullName}</h1>
-              <p className="text-xs text-gray-500">
+            <div className="flex flex-col">
+              <span className="text-sm font-semibold truncate w-24 text-text-light dark:text-text-dark">{user.fullName}</span>
+              <span className="text-xs text-primary font-medium">
                 <Protect plan="premium" fallback="Free">
                   Premium
                 </Protect>{" "}
                 Plan
-              </p>
+              </span>
             </div>
           </div>
           <LogOut
-            onClick={signOut}
-            className="w-6 h-6 text-gray-400 hover:text-gray-700 transition cursor-pointer"
+            onClick={(e) => {
+              e.stopPropagation();
+              signOut();
+            }}
+            className="w-5 h-5 text-gray-400 hover:text-red-500 transition-colors"
           />
         </div>
       </div>

@@ -31,20 +31,20 @@ const Testimonials = () => {
   ];
 
   const CreateCard = ({ card }) => (
-    <div className="p-4 rounded-lg mx-4 shadow hover:shadow-lg transition-all duration-200 w-72 shrink-0">
-      <div className="flex gap-2">
+    <div className="p-5 rounded-2xl mx-4 glass-panel hover-3d w-80 shrink-0 border border-gray-200/50 dark:border-gray-700/50">
+      <div className="flex gap-3">
         <img
-          className="size-11 rounded-full"
+          className="w-12 h-12 rounded-full object-cover shadow-sm ring-2 ring-primary/10"
           src={card.image}
           alt="User Image"
         />
-        <div className="flex flex-col">
-          <div className="flex items-center gap-1">
-            <p>{card.name}</p>
+        <div className="flex flex-col justify-center">
+          <div className="flex items-center gap-1.5">
+            <p className="font-semibold text-sm text-text-light dark:text-text-dark">{card.name}</p>
             <svg
               className="mt-0.5"
-              width="12"
-              height="12"
+              width="14"
+              height="14"
               viewBox="0 0 12 12"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
@@ -57,23 +57,23 @@ const Testimonials = () => {
               />
             </svg>
           </div>
-          <span className="text-xs text-slate-500">{card.handle}</span>
+          <span className="text-xs text-gray-500 dark:text-gray-400 font-medium">{card.handle}</span>
         </div>
       </div>
-      <p className="text-sm py-4 text-gray-800">
-        Radiant made undercutting all of our competitors an absolute breeze.
+      <p className="text-sm py-4 text-gray-600 dark:text-gray-300 leading-relaxed">
+        Radiant made undercutting all of our competitors an absolute breeze. The generated outputs are top tier.
       </p>
-      <div className="flex items-center justify-between text-slate-500 text-xs">
-        <div className="flex items-center gap-1">
+      <div className="flex items-center justify-between text-gray-400 dark:text-gray-500 text-xs font-medium mt-1">
+        <div className="flex items-center gap-1.5">
           <span>Posted on</span>
           <a
             href="https://x.com"
             target="_blank"
-            className="hover:text-sky-500"
+            className="hover:text-sky-500 transition-colors"
           >
             <svg
-              width="11"
-              height="10"
+              width="12"
+              height="11"
               viewBox="0 0 11 10"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
@@ -91,7 +91,16 @@ const Testimonials = () => {
   );
 
   return (
-    <>
+    <div className="py-16">
+      <div className="text-center mb-12">
+        <h2 className="text-3xl font-bold tracking-tight text-text-light dark:text-white">
+          Loved by builders
+        </h2>
+        <p className="text-gray-500 dark:text-gray-400 mt-2 text-lg">
+          Join thousands of professionals landing their dream roles.
+        </p>
+      </div>
+
       <style>{`
             @keyframes marqueeScroll {
                 0% { transform: translateX(0%); }
@@ -107,26 +116,26 @@ const Testimonials = () => {
             }
         `}</style>
 
-      <div className="marquee-row w-full mx-auto max-w-5xl overflow-hidden relative">
-        <div className="absolute left-0 top-0 h-full w-20 z-10 pointer-events-none bg-gradient-to-r from-white to-transparent"></div>
-        <div className="marquee-inner flex transform-gpu min-w-[200%] pt-10 pb-5">
+      <div className="marquee-row w-full mx-auto max-w-6xl overflow-hidden relative">
+        <div className="absolute left-0 top-0 h-full w-24 md:w-32 z-10 pointer-events-none bg-gradient-to-r from-bg-light dark:from-bg-dark to-transparent"></div>
+        <div className="marquee-inner flex transform-gpu min-w-[200%] py-4">
           {[...cardsData, ...cardsData].map((card, index) => (
             <CreateCard key={index} card={card} />
           ))}
         </div>
-        <div className="absolute right-0 top-0 h-full w-20 md:w-40 z-10 pointer-events-none bg-gradient-to-l from-white to-transparent"></div>
+        <div className="absolute right-0 top-0 h-full w-24 md:w-32 z-10 pointer-events-none bg-gradient-to-l from-bg-light dark:from-bg-dark to-transparent"></div>
       </div>
 
-      <div className="marquee-row w-full mx-auto max-w-5xl overflow-hidden relative">
-        <div className="absolute left-0 top-0 h-full w-20 z-10 pointer-events-none bg-gradient-to-r from-white to-transparent"></div>
-        <div className="marquee-inner marquee-reverse flex transform-gpu min-w-[200%] pt-10 pb-5">
+      <div className="marquee-row w-full mx-auto max-w-6xl overflow-hidden relative mt-4">
+        <div className="absolute left-0 top-0 h-full w-24 md:w-32 z-10 pointer-events-none bg-gradient-to-r from-bg-light dark:from-bg-dark to-transparent"></div>
+        <div className="marquee-inner marquee-reverse flex transform-gpu min-w-[200%] py-4">
           {[...cardsData, ...cardsData].map((card, index) => (
             <CreateCard key={index} card={card} />
           ))}
         </div>
-        <div className="absolute right-0 top-0 h-full w-20 md:w-40 z-10 pointer-events-none bg-gradient-to-l from-white to-transparent"></div>
+        <div className="absolute right-0 top-0 h-full w-24 md:w-32 z-10 pointer-events-none bg-gradient-to-l from-bg-light dark:from-bg-dark to-transparent"></div>
       </div>
-    </>
+    </div>
   );
 };
 
