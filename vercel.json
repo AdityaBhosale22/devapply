@@ -1,0 +1,16 @@
+{
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "/api/index.js"
+    },
+    {
+      "src": "^/(dashboard|pricing|job-fit|resume-analyzer|cover-letter-generator|project-bullet-generator)(/.*)?$",
+      "dest": "/client/dist/index.html"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/client/dist/$1"
+    }
+  ]
+}

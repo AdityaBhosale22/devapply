@@ -36,7 +36,8 @@ export default function ResumeAnalyzer() {
     try {
       const token = await getToken();
 
-      const res = await axios.get("http://localhost:5000/api/activities", {
+      const baseUrl = import.meta.env.VITE_API_URL || "";
+      const res = await axios.get(`${baseUrl}/api/activities`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -63,8 +64,9 @@ export default function ResumeAnalyzer() {
 
       const token = await getToken();
 
+      const baseUrl = import.meta.env.VITE_API_URL || "";
       const res = await axios.post(
-        "http://localhost:5000/api/resume/analyze",
+        `${baseUrl}/api/resume/analyze`,
         formData,
         {
           headers: {

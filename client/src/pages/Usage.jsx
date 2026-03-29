@@ -68,7 +68,7 @@ export default function Usage() {
       if (!token) return;
 
       const headers = { Authorization: `Bearer ${token}` };
-      const baseUrl = import.meta.env.VITE_BASE_URL || "http://localhost:5000";
+      const baseUrl = import.meta.env.VITE_API_URL || "";
 
       // Parallel Fetch: Analytics, Credits, and Activities
       const [analyticsRes, creditsRes, activitiesRes] = await Promise.allSettled([

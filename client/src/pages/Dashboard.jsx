@@ -80,7 +80,7 @@ export default function Dashboard() {
       if (!token) return;
 
       const headers = { Authorization: `Bearer ${token}` };
-      const baseUrl = import.meta.env.VITE_BASE_URL || "http://localhost:5000";
+      const baseUrl = import.meta.env.VITE_API_URL || "";
 
       console.log(`Fetching data from: ${baseUrl}`);
 

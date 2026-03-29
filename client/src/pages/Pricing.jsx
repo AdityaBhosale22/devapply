@@ -57,8 +57,9 @@ export default function Pricing() {
 
       const token = await getToken();
 
+      const baseUrl = import.meta.env.VITE_API_URL || "";
       const res = await axios.post(
-        "http://localhost:5000/api/subscription/upgrade",
+        `${baseUrl}/api/subscription/upgrade`,
         { planType },
         {
           headers: {

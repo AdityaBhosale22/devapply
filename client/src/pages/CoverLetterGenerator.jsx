@@ -34,7 +34,8 @@ const handleGenerate = async () => {
 
     const token = await getToken();
 
-    const { data } = await axios.post("http://localhost:5000/api/cover-letter",
+    const baseUrl = import.meta.env.VITE_API_URL || "";
+    const { data } = await axios.post(`${baseUrl}/api/cover-letter`,
       {
         role: jobTitle,
         company,

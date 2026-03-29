@@ -36,8 +36,9 @@ export default function JobFitAnalyzer() {
       formData.append("resume", file);
       formData.append("jobDescription", jd);
 
+      const baseUrl = import.meta.env.VITE_API_URL || "";
       const { data } = await axios.post(
-        "http://localhost:5000/api/job-fit",
+        `${baseUrl}/api/job-fit`,
         formData,
         {
           headers: {
