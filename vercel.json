@@ -1,4 +1,6 @@
 {
+  "buildCommand": "npm --prefix client install && npm --prefix client run build",
+  "outputDirectory": "client/dist",
   "routes": [
     {
       "src": "/api/(.*)",
@@ -6,11 +8,11 @@
     },
     {
       "src": "^/(dashboard|pricing|job-fit|resume-analyzer|cover-letter-generator|project-bullet-generator)(/.*)?$",
-      "dest": "/client/dist/index.html"
+      "dest": "/index.html"
     },
     {
       "src": "/(.*)",
-      "dest": "/client/dist/$1"
+      "dest": "/$1"
     }
   ]
 }
