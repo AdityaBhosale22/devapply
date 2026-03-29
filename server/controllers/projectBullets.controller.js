@@ -43,7 +43,7 @@ export const generateProjectBullets = async (req, res) => {
     // FIX 4: Pass an object to match your activity logger signature
     await logActivity({
       userId,
-      feature: "Project Bullets",
+      feature: "project_bullets",
       prompt: `Bullets for ${projectName}`,
       result: aiResponse,
       creditsUsed: 5,

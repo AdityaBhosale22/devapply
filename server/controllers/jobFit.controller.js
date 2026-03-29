@@ -1,5 +1,5 @@
 import { extractTextFromPDF } from "../utils/pdfParser.js";
-import { generateAIResponse } from "../services/ai.service.js";
+import { generateAIResponse, parseJsonFromText } from "../services/ai.service.js";
 import { deductCredits, getUserCredits } from "../utils/credits.js";
 import { logActivity } from "../utils/activityLogger.js";
 
@@ -48,20 +48,26 @@ export const analyzeJobFit = async (req, res) => {
     `;
 
     const aiResponse = await generateAIResponse(prompt);
+    const parsedResponse = parseJsonFromText(aiResponse, {
+      score: 0,
+      matchedSkills: [],
+      missingSkills: [],
+      suggestions: ["AI response could not be parsed. Please try again."],
+    });
 
     // 5. Deduct credits and log
     await deductCredits(userId, 10);
     await logActivity({
       userId,
-      feature: "Job Fit Analyzer",
+      feature: "job_fit",
       prompt: "Job Fit Analysis",
-      result: aiResponse,
+      result: JSON.stringify(parsedResponse),
       creditsUsed: 10,
     });
 
     res.json({
       success: true,
-      data: aiResponse,
+      data: parsedResponse,
     });
 
   } catch (err) {

@@ -1,4 +1,4 @@
-import { pool } from "../db/index.js";
+import { getUserCredits } from "../utils/credits.js";
 
 export const checkCredits = (cost) => {
     return async (req, res, next) => {
@@ -13,25 +13,7 @@ export const checkCredits = (cost) => {
 
             console.log("User ID:", userId);
 
-            const { rows } = await pool.query(
-                `SELECT credits_remaining FROM users WHERE id = $1`,
-                [userId]
-            );
-
-            if (!rows.length) {
-                await pool.query(
-                    `INSERT INTO users (id, credits_remaining)
-     VALUES ($1, 100)`,
-                    [userId]
-                );
-
-                console.log("🆕 User auto-created with 100 credits");
-
-                return next();
-            }
-
-
-            const credits = rows[0].credits_remaining;
+            const credits = await getUserCredits(userId);
 
             console.log("User Credits:", credits);
 

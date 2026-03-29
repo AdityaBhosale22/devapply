@@ -10,6 +10,35 @@ export const generateAIResponse = async (prompt) => {
   return response.text();
 };
 
+export const parseJsonFromText = (rawText, fallback = {}) => {
+  if (!rawText || typeof rawText !== "string") return fallback;
+
+  const candidates = [];
+  const trimmed = rawText.trim();
+  candidates.push(trimmed);
+
+  const fencedMatch = trimmed.match(/```(?:json)?\s*([\s\S]*?)```/i);
+  if (fencedMatch?.[1]) {
+    candidates.push(fencedMatch[1].trim());
+  }
+
+  const firstBrace = trimmed.indexOf("{");
+  const lastBrace = trimmed.lastIndexOf("}");
+  if (firstBrace !== -1 && lastBrace !== -1 && lastBrace > firstBrace) {
+    candidates.push(trimmed.slice(firstBrace, lastBrace + 1));
+  }
+
+  for (const candidate of candidates) {
+    try {
+      return JSON.parse(candidate);
+    } catch {
+      // Try next candidate.
+    }
+  }
+
+  return fallback;
+};
+
 export const analyzeResumeWithAI = async (resumeText) => {
   try {
     if (!process.env.GEMINI_API_KEY) {

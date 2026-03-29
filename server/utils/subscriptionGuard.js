@@ -27,17 +27,6 @@ export const validateSubscription = async (userId) => {
 
         return { valid: false, expired: true };
     }
-    if (isExpired) {
-
-        await pool.query(
-            `UPDATE users
-     SET credits_remaining = $1
-     WHERE id = $2`,
-            [PLAN_CONFIG.free.credits, userId]
-        );
-
-        return { valid: false, expired: true };
-    }
 
     return { valid: true, subscription };
 };

@@ -1,20 +1,17 @@
-import { pool } from "../db/index.js";
+import { getUserCredits as getUserCreditsValue } from "../utils/credits.js";
 
 export const getUserCredits = async (req, res) => {
   try {
     const { userId } = req.auth();
 
-    const { rows } = await pool.query(
-      `SELECT credits_remaining FROM users WHERE id = $1`,
-      [userId]
-    );
-
-    console.log("Credits Query Rows:", rows);
+    const credits = await getUserCreditsValue(userId);
 
     res.json({
-  success: true,
-  data: rows[0],
-});
+      success: true,
+      data: {
+        credits_remaining: credits,
+      },
+    });
 
 
   } catch (err) {
