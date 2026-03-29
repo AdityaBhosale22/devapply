@@ -3,6 +3,6 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "build": "npm --prefix client install && npm --prefix client run build"
+    "build": "npm --prefix client install && npm --prefix client run build && node -e \"const fs=require('fs');fs.rmSync('public',{recursive:true,force:true});fs.cpSync('client/dist','public',{recursive:true});\""
   }
 }
