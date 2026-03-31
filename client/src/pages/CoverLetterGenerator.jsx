@@ -11,6 +11,7 @@ import {
   Wand2,
   Copy,
   Loader2,
+  PenTool,
 } from "lucide-react";
 import Markdown from "react-markdown";
 
