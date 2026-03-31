@@ -33,11 +33,12 @@ export default function ProjectBulletGenerator() {
 
       // ⭐ 1. Get the auth token
       const token = await getToken();
+      const BASE_URL = import.meta.env.VITE_API_URL;
 
       // ⭐ 2. Make the real API call
       // (Assuming you kept the Vite proxy we set up earlier)
       const { data } = await axios.post(
-        "http://localhost:5000/api/project-bullets",
+        `${BASE_URL}/api/project-bullets`,
         {
           projectName: title, // Map frontend 'title' to backend 'projectName'
           techStack: stack, // Map frontend 'stack' to backend 'techStack'

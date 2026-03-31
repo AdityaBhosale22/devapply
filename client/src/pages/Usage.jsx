@@ -68,13 +68,13 @@ export default function Usage() {
       if (!token) return;
 
       const headers = { Authorization: `Bearer ${token}` };
-      const baseUrl = import.meta.env.VITE_BASE_URL || "http://localhost:5000";
+      const BASE_URL = import.meta.env.VITE_API_URL;
 
       // Parallel Fetch: Analytics, Credits, and Activities
       const [analyticsRes, creditsRes, activitiesRes] = await Promise.allSettled([
-        axios.get(`${baseUrl}/api/analytics`, { headers }),     // Your new endpoint
-        axios.get(`${baseUrl}/api/user/credits`, { headers }),  // To get exact remaining balance
-        axios.get(`${baseUrl}/api/activities`, { headers })     // For the history table
+        axios.get(`${BASE_URL}/api/analytics`, { headers }),     // Your new endpoint
+        axios.get(`${BASE_URL}/api/user/credits`, { headers }),  // To get exact remaining balance
+        axios.get(`${BASE_URL}/api/activities`, { headers })     // For the history table
       ]);
 
       // 1. Process Analytics

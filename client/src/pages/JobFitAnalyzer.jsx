@@ -30,6 +30,7 @@ export default function JobFitAnalyzer() {
     try {
       setLoading(true);
       const token = await getToken();
+      const BASE_URL = import.meta.env.VITE_API_URL;
 
       // ⭐ Use FormData to send both the file and the text
       const formData = new FormData();
@@ -37,7 +38,7 @@ export default function JobFitAnalyzer() {
       formData.append("jobDescription", jd);
 
       const { data } = await axios.post(
-        "http://localhost:5000/api/job-fit",
+        `${BASE_URL}/api/job-fit`,
         formData,
         {
           headers: {

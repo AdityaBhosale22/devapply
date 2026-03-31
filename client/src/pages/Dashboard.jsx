@@ -80,15 +80,15 @@ export default function Dashboard() {
       if (!token) return;
 
       const headers = { Authorization: `Bearer ${token}` };
-      const baseUrl = import.meta.env.VITE_BASE_URL || "http://localhost:5000";
+      const BASE_URL = import.meta.env.VITE_API_URL;
 
-      console.log(`Fetching data from: ${baseUrl}`);
+      console.log(`Fetching data from: ${BASE_URL}`);
 
       const [activitiesResult, creditsResult, planResult] =
         await Promise.allSettled([
-          axios.get(`${baseUrl}/api/activities`, { headers }),
-          axios.get(`${baseUrl}/api/user/credits`, { headers }),
-          axios.get(`${baseUrl}/api/subscription`, { headers }), // ⭐ NEW
+          axios.get(`${BASE_URL}/api/activities`, { headers }),
+          axios.get(`${BASE_URL}/api/user/credits`, { headers }),
+          axios.get(`${BASE_URL}/api/subscription`, { headers }), // ⭐ NEW
         ]);
 
       /* Activities */
