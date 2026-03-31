@@ -19,7 +19,10 @@ const app = express();
 /* ✅ CORS Configuration */
 app.use(
   cors({
-    origin: ["http://localhost:5173", "https://devapply-6akc.vercel.app"],
+    origin: [
+      "http://localhost:5173",
+      "https://devapply-j5fi-qv2ys8xfv-adityas-projects-d7b95a25.vercel.app"
+    ],
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   })
