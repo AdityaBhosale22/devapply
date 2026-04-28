@@ -17,12 +17,18 @@ dotenv.config();
 const app = express();
 
 /* ✅ CORS Configuration */
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://devapply-j5fi-qv2ys8xfv-adityas-projects-d7b95a25.vercel.app",
+  // Shorter Vercel alias used by the deployed frontend
+  "https://devapply-j5fi.vercel.app",
+  // Optional override via env var
+  process.env.CLIENT_URL,
+].filter(Boolean);
+
 app.use(
   cors({
-    origin: [
-      "http://localhost:5173",
-      "https://devapply-j5fi-qv2ys8xfv-adityas-projects-d7b95a25.vercel.app"
-    ],
+    origin: allowedOrigins,
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   })
