@@ -1,6 +1,10 @@
 import { pool } from "../db/index.js";
 
 export const validateSubscription = async (userId) => {
+    // Allow skipping subscription checks in non-production/dev debugging
+    if (process.env.SKIP_SUBSCRIPTION_CHECK === 'true') {
+        return { valid: true, subscription: null };
+    }
     const { rows } = await pool.query(
         `SELECT *
      FROM subscriptions
