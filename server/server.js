@@ -11,6 +11,7 @@ import analyticsRoutes from "./routes/analytics.routes.js";
 import coverLetterRoutes from "./routes/coverLetter.routes.js";
 import projectBulletsRoutes from "./routes/projectBullets.routes.js";
 import jobFitRoutes from "./routes/jobFit.routes.js";
+import debugRoutes from "./routes/debug.routes.js";
 
 dotenv.config();
 
@@ -67,6 +68,11 @@ app.get("/api/protected", requireAuthMiddleware, (req, res) => {
 
 /* ✅ Resume Routes */
 app.use("/api/resume", resumeRoutes);
+
+// Optional debug routes — enable by setting ENABLE_DEBUG_ROUTES=true in env
+if (process.env.ENABLE_DEBUG_ROUTES === "true") {
+  app.use("/api/debug", debugRoutes);
+}
 
 /* ✅ Cover Letter Routes */
 app.use("/api/cover-letter", coverLetterRoutes);

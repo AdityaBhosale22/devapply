@@ -65,16 +65,12 @@ export default function ResumeAnalyzer() {
       const token = await getToken();
       const BASE_URL = import.meta.env.VITE_API_URL;
 
-      const res = await axios.post(
-        `${BASE_URL}/api/resume/analyze`,
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-            Authorization: `Bearer ${token}`,
-          },
+      const res = await axios.post(`${BASE_URL}/api/resume/analyze`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${token}`,
         },
-      );
+      });
 
       // ✅ SAFE PLACE — res EXISTS HERE
       setResult(res.data.data);
@@ -84,12 +80,20 @@ export default function ResumeAnalyzer() {
 
       toast.success("Resume analyzed successfully!");
     } catch (error) {
-      console.error("Analysis failed:", error);
+      const status = error?.response?.status;
+      const data = error?.response?.data;
 
-      const errorMessage =
-        error.response?.data?.message || "Failed to analyze resume.";
+      let msg = data?.message || "Failed to analyze resume.";
 
-      toast.error(errorMessage);
+      if (status === 403 && data?.code === "SUBSCRIPTION_REQUIRED") {
+        msg = "Please upgrade your plan to use Resume Analyzer.";
+      } else if (status === 403 && data?.code === "INSUFFICIENT_CREDITS") {
+        msg = "You don’t have enough credits.";
+      } else if (status === 401) {
+        msg = "Please sign in again.";
+      }
+
+      toast.error(msg);
     } finally {
       setLoading(false);
     }
@@ -243,9 +247,13 @@ const Section = ({ title, content, icon: Icon, color }) => {
         >
           <Icon size={20} />
         </div>
-        <h2 className="font-bold text-text-light dark:text-white text-lg">{title}</h2>
+        <h2 className="font-bold text-text-light dark:text-white text-lg">
+          {title}
+        </h2>
       </div>
-      <p className="text-gray-600 dark:text-gray-300 leading-relaxed">{content}</p>
+      <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
+        {content}
+      </p>
     </div>
   );
 };
@@ -268,16 +276,14 @@ const ListSection = ({ title, items, icon: Icon, color }) => {
   };
 
   return (
-    <div
-      className="p-6 rounded-2xl glass-panel h-full"
-    >
+    <div className="p-6 rounded-2xl glass-panel h-full">
       <div className="flex items-center gap-3 mb-4">
-        <div
-          className={`p-2 rounded-lg ${colorStyles[color]}`}
-        >
+        <div className={`p-2 rounded-lg ${colorStyles[color]}`}>
           <Icon size={20} />
         </div>
-        <h2 className="font-bold text-text-light dark:text-white text-lg">{title}</h2>
+        <h2 className="font-bold text-text-light dark:text-white text-lg">
+          {title}
+        </h2>
       </div>
       <ul className="space-y-3">
         {items?.map((item, idx) => (
@@ -292,7 +298,9 @@ const ListSection = ({ title, items, icon: Icon, color }) => {
           </li>
         ))}
         {(!items || items.length === 0) && (
-          <li className="text-gray-400 dark:text-gray-500 italic text-sm">No items found.</li>
+          <li className="text-gray-400 dark:text-gray-500 italic text-sm">
+            No items found.
+          </li>
         )}
       </ul>
     </div>

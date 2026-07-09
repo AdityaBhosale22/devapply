@@ -225,7 +225,7 @@ const handleGenerate = async () => {
             {/* The Paper Document */}
             <div
               className={`
-              flex-grow glass-panel p-8 md:p-12 min-h-[500px] transition-all duration-500
+              grow glass-panel p-8 md:p-12 min-h-125 transition-all duration-500
               ${!result ? "flex items-center justify-center bg-white/30 dark:bg-black/10 border-dashed border-2" : ""}
             `}
             >
