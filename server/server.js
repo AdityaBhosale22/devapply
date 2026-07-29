@@ -20,20 +20,43 @@ const app = express();
 /* ✅ CORS Configuration */
 const allowedOrigins = [
   "http://localhost:5173",
+  "http://localhost:5174",
+  "http://localhost:3000",
+  "http://127.0.0.1:5173",
+  "http://127.0.0.1:5174",
   "https://devapply-j5fi-qv2ys8xfv-adityas-projects-d7b95a25.vercel.app",
-  // Shorter Vercel alias used by the deployed frontend
   "https://devapply-j5fi.vercel.app",
-  // Optional override via env var
   process.env.CLIENT_URL,
 ].filter(Boolean);
 
-app.use(
-  cors({
-    origin: allowedOrigins,
-    methods: ["GET", "POST", "PUT", "DELETE"],
-    credentials: true,
-  })
-);
+const corsOptions = {
+  origin: (origin, callback) => {
+    // Allow requests with no origin (like mobile apps, curl, Postman)
+    if (!origin) return callback(null, true);
+    if (
+      allowedOrigins.includes(origin) ||
+      /^http:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin) ||
+      /\.vercel\.app$/.test(origin)
+    ) {
+      return callback(null, true);
+    }
+    return callback(null, true);
+  },
+  methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
+  allowedHeaders: [
+    "Content-Type",
+    "Authorization",
+    "X-Requested-With",
+    "Accept",
+    "Origin",
+    "Access-Control-Request-Method",
+    "Access-Control-Request-Headers",
+  ],
+  credentials: true,
+  optionsSuccessStatus: 200,
+};
+
+app.use(cors(corsOptions));
 
 app.use(express.json());
 

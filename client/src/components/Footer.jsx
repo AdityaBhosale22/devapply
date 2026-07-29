@@ -11,7 +11,6 @@ const Footer = () => {
         <div className="col-span-1 lg:col-span-1">
           <div className="flex items-center gap-2 mb-4">
              <img src={assets.logo} alt="DevApply Logo" className="h-8 w-auto" />
-             {/* <span className="text-xl font-bold text-slate-800">DevApply</span> */}
           </div>
           <p className="text-slate-500 text-sm leading-relaxed mb-6">
             The AI-powered career assistant helping developers land their dream jobs. 

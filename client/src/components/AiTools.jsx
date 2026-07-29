@@ -8,7 +8,7 @@ const AiTools = () => {
   const { user } = useUser();
 
   return (
-    <div className="w-full max-w-7xl mx-auto p-4 sm:p-6 lg:p-8">
+    <div id="ai-tools" className="w-full max-w-7xl mx-auto p-4 sm:p-6 lg:p-8">
       {/* Section Header */}
       <div className="mb-10">
         <h2 className="text-3xl font-bold tracking-tight text-text-light dark:text-white">

@@ -30,11 +30,6 @@ const Hero = () => {
         >
           Start building for free
         </button>
-        <button 
-          className="glass hover:bg-white/80 dark:hover:bg-gray-800/80 text-text-light dark:text-text-dark font-medium px-8 py-3.5 rounded-full hover-3d transition-all focus:ring-4 focus:ring-gray-300/30 outline-none"
-        >
-          Watch how it works
-        </button>
       </div>
 
       <div className="flex items-center gap-4 mt-16 mx-auto text-gray-500 dark:text-gray-400 font-medium z-10 glass px-6 py-2.5 rounded-full">
