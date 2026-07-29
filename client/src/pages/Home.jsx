@@ -1,10 +1,10 @@
 import React from "react";
-import Navbar from "../components/Navbar";
-import Hero from "../components/Hero";
-import AiTools from "../components/AiTools";
-import Testimonials from "../components/Testimonials";
-import Plan from "../components/Plan";
-import Footer from "../components/Footer";
+import Navbar from "../components/Navbar.jsx";
+import Hero from "../components/Hero.jsx";
+import AiTools from "../components/AiTools.jsx";
+import Testimonials from "../components/Testimonials.jsx";
+import Plan from "../components/Plan.jsx";
+import Footer from "../components/Footer.jsx";
 
 const Home = () => {
   return (
