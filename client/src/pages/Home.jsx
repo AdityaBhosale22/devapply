@@ -11,8 +11,8 @@ const Home = () => {
   return (
     <div className="min-h-screen">
       <div
-        className="w-full bg-cover bg-center"
-        style={{ backgroundImage: `url(${assets.gradientBackground})` }}
+        className="w-full bg-cover bg-center bg-black"
+        // style={{ backgroundImage: `url(${assets.gradientBackground})` }}
       >
         <Navbar />
         <Hero />

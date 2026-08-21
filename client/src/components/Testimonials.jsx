@@ -1,141 +1,138 @@
+// Testimonials.jsx
+import React from "react";
+
 const Testimonials = () => {
   const cardsData = [
     {
-      image:
-        "https://images.unsplash.com/photo-1633332755192-727a05c4013d?q=80&w=200",
+      image: "https://images.unsplash.com/photo-1633332755192-727a05c4013d?q=80&w=200",
       name: "Briar Martin",
-      handle: "@neilstellar",
-      date: "April 20, 2025",
+      handle: "@briarcodes",
+      role: "Frontend Engineer",
+      text: "The Cover Letter Generator is pure magic. It tailored my application perfectly to the job description and I landed an interview within 24 hours.",
     },
     {
-      image:
-        "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=200",
+      image: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=200",
       name: "Avery Johnson",
-      handle: "@averywrites",
-      date: "May 10, 2025",
+      handle: "@averydev",
+      role: "Full Stack Developer",
+      text: "DevApply's Resume Analyzer found critical keywords I was missing. My callback rate has jumped by at least 40% since I started using it.",
     },
     {
-      image:
-        "https://images.unsplash.com/photo-1527980965255-d3b416303d12?w=200&auto=format&fit=crop&q=60",
+      image: "https://images.unsplash.com/photo-1527980965255-d3b416303d12?w=200&auto=format&fit=crop&q=60",
       name: "Jordan Lee",
-      handle: "@jordantalks",
-      date: "June 5, 2025",
+      handle: "@jordanbuilds",
+      role: "Software Engineer",
+      text: "The Project Bullet Enhancer transformed my weak bullet points into strong, metric-driven achievements. Highly recommend for any dev looking to level up.",
     },
     {
-      image:
-        "https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?w=200&auto=format&fit=crop&q=60",
-      name: "Avery Johnson",
-      handle: "@averywrites",
-      date: "May 10, 2025",
+      image: "https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?w=200&auto=format&fit=crop&q=60",
+      name: "Marcus Chen",
+      handle: "@marcus_dev",
+      role: "Junior Developer",
+      text: "As a self-taught dev, I struggled with how to present my portfolio. DevApply guided me to position my skills perfectly and helped me land my first tech role.",
+    },
+    {
+      image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=200&auto=format&fit=crop&q=60",
+      name: "Sarah Jenkins",
+      handle: "@sarahjtech",
+      role: "React Developer",
+      text: "I was tired of writing repetitive cover letters. DevApply automated the boring parts while keeping my personal voice intact. A total game changer.",
     },
   ];
 
   const CreateCard = ({ card }) => (
-    <div className="p-5 rounded-2xl mx-4 glass-panel hover-3d w-80 shrink-0 border border-gray-200/50 dark:border-gray-700/50">
-      <div className="flex gap-3">
-        <img
-          className="w-12 h-12 rounded-full object-cover shadow-sm ring-2 ring-primary/10"
-          src={card.image}
-          alt="User Image"
-        />
-        <div className="flex flex-col justify-center">
-          <div className="flex items-center gap-1.5">
-            <p className="font-semibold text-sm text-text-light dark:text-text-dark">{card.name}</p>
-            <svg
-              className="mt-0.5"
-              width="14"
-              height="14"
-              viewBox="0 0 12 12"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                fillRule="evenodd"
-                clipRule="evenodd"
-                d="M4.555.72a4 4 0 0 1-.297.24c-.179.12-.38.202-.59.244a4 4 0 0 1-.38.041c-.48.039-.721.058-.922.129a1.63 1.63 0 0 0-.992.992c-.071.2-.09.441-.129.922a4 4 0 0 1-.041.38 1.6 1.6 0 0 1-.245.59 3 3 0 0 1-.239.297c-.313.368-.47.551-.56.743-.213.444-.213.96 0 1.404.09.192.247.375.56.743.125.146.187.219.24.297.12.179.202.38.244.59.018.093.026.189.041.38.039.48.058.721.129.922.163.464.528.829.992.992.2.071.441.09.922.129.191.015.287.023.38.041.21.042.411.125.59.245.078.052.151.114.297.239.368.313.551.47.743.56.444.213.96.213 1.404 0 .192-.09.375-.247.743-.56.146-.125.219-.187.297-.24.179-.12.38-.202.59-.244a4 4 0 0 1 .38-.041c.48-.039.721-.058.922-.129.464-.163.829-.528.992-.992.071-.2.09-.441.129-.922a4 4 0 0 1 .041-.38c.042-.21.125-.411.245-.59.052-.078.114-.151.239-.297.313-.368.47-.551.56-.743.213-.444.213-.96 0-1.404-.09-.192-.247-.375-.56-.743a4 4 0 0 1-.24-.297 1.6 1.6 0 0 1-.244-.59 3 3 0 0 1-.041-.38c-.039-.48-.058-.721-.129-.922a1.63 1.63 0 0 0-.992-.992c-.2-.071-.441-.09-.922-.129a4 4 0 0 1-.38-.041 1.6 1.6 0 0 1-.59-.245A3 3 0 0 1 7.445.72C7.077.407 6.894.25 6.702.16a1.63 1.63 0 0 0-1.404 0c-.192.09-.375.247-.743.56m4.07 3.998a.488.488 0 0 0-.691-.69l-2.91 2.91-.958-.957a.488.488 0 0 0-.69.69l1.302 1.302c.19.191.5.191.69 0z"
-                fill="#2196F3"
-              />
-            </svg>
-          </div>
-          <span className="text-xs text-gray-500 dark:text-gray-400 font-medium">{card.handle}</span>
-        </div>
-      </div>
-      <p className="text-sm py-4 text-gray-600 dark:text-gray-300 leading-relaxed">
-        Radiant made undercutting all of our competitors an absolute breeze. The generated outputs are top tier.
+    <div className="p-6 sm:p-8 rounded-[1.5rem] mr-4 sm:mr-6 w-[22rem] sm:w-[26rem] shrink-0 border border-[#e6e5e2] bg-white transition-colors duration-300 hover:bg-[#f1f0ee] flex flex-col justify-between gap-6 cursor-pointer">
+      <p className="text-sm text-[#111111]/80 leading-relaxed font-medium">
+        "{card.text}"
       </p>
-      <div className="flex items-center justify-between text-gray-400 dark:text-gray-500 text-xs font-medium mt-1">
-        <div className="flex items-center gap-1.5">
-          <span>Posted on</span>
-          <a
-            href="https://x.com"
-            target="_blank"
-            className="hover:text-sky-500 transition-colors"
-          >
-            <svg
-              width="12"
-              height="11"
-              viewBox="0 0 11 10"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="m.027 0 4.247 5.516L0 10h.962l3.742-3.926L7.727 10H11L6.514 4.174 10.492 0H9.53L6.084 3.616 3.3 0zM1.44.688h1.504l6.64 8.624H8.082z"
-                fill="currentColor"
-              />
-            </svg>
-          </a>
+      
+      <div className="flex gap-4 items-center">
+        <img
+          className="w-12 h-12 rounded-full object-cover border border-[#e6e5e2]"
+          src={card.image}
+          alt={card.name}
+        />
+        <div className="flex flex-col">
+          <div className="flex items-center gap-1.5">
+            <p className="font-semibold text-sm text-[#111111]">{card.name}</p>
+            <span className="text-xs text-[#111111]/40">•</span>
+            <span className="text-xs font-medium text-[#111111]/60">
+              {card.handle}
+            </span>
+          </div>
+          <span className="text-xs font-medium text-[#111111]/50 mt-0.5">{card.role}</span>
         </div>
-        <p>{card.date}</p>
       </div>
     </div>
   );
 
   return (
-    <div className="py-16">
-      <div className="text-center mb-12">
-        <h2 className="text-3xl font-bold tracking-tight text-text-light dark:text-white">
-          Loved by builders
-        </h2>
-        <p className="text-gray-500 dark:text-gray-400 mt-2 text-lg">
-          Join thousands of professionals landing their dream roles.
-        </p>
-      </div>
+    /* Changed to full width background to block the dark canvas behind it */
+    <section className="w-full bg-white py-20 overflow-hidden">
+      
+      {/* Inner container to hold the 88rem width limit */}
+      <div className="max-w-[88rem] mx-auto px-5 sm:px-8">
+        
+        <div className="mb-12 flex flex-col gap-4">
+          <div className="inline-flex items-center gap-2 text-sm font-medium text-[#111111]/70">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#111111]/50"></span>
+            Wall of Love
+          </div>
+          <h2 className="text-4xl sm:text-5xl font-bold tracking-tight text-[#111111] max-w-lg">
+            Loved by builders
+          </h2>
+          <p className="text-sm font-medium text-[#111111]/60">
+            Join thousands of developers landing their dream roles with AI.
+          </p>
+        </div>
 
-      <style>{`
-            @keyframes marqueeScroll {
-                0% { transform: translateX(0%); }
-                100% { transform: translateX(-50%); }
-            }
+        <style>{`
+          @keyframes marqueeScroll {
+              0% { transform: translateX(0%); }
+              100% { transform: translateX(-50%); }
+          }
 
-            .marquee-inner {
-                animation: marqueeScroll 25s linear infinite;
-            }
+          .marquee-inner {
+              animation: marqueeScroll 35s linear infinite;
+          }
+          
+          .marquee-inner:hover {
+              animation-play-state: paused;
+          }
 
-            .marquee-reverse {
-                animation-direction: reverse;
-            }
+          .marquee-reverse {
+              animation-direction: reverse;
+          }
         `}</style>
 
-      <div className="marquee-row w-full mx-auto max-w-6xl overflow-hidden relative">
-        <div className="absolute left-0 top-0 h-full w-24 md:w-32 z-10 pointer-events-none bg-gradient-to-r from-bg-light dark:from-bg-dark to-transparent"></div>
-        <div className="marquee-inner flex transform-gpu min-w-[200%] py-4">
-          {[...cardsData, ...cardsData].map((card, index) => (
-            <CreateCard key={index} card={card} />
-          ))}
-        </div>
-        <div className="absolute right-0 top-0 h-full w-24 md:w-32 z-10 pointer-events-none bg-gradient-to-l from-bg-light dark:from-bg-dark to-transparent"></div>
-      </div>
+        {/* Marquee Container - explicitly hidden overflow so it clips at the edge */}
+        <div className="relative w-full overflow-hidden">
+          
+          {/* Gradient Masks - Increased width for a smoother fade! */}
+          <div className="absolute left-0 top-0 h-full w-24 sm:w-40 z-10 pointer-events-none bg-gradient-to-r from-white to-transparent"></div>
+          <div className="absolute right-0 top-0 h-full w-24 sm:w-40 z-10 pointer-events-none bg-gradient-to-l from-white to-transparent"></div>
 
-      <div className="marquee-row w-full mx-auto max-w-6xl overflow-hidden relative mt-4">
-        <div className="absolute left-0 top-0 h-full w-24 md:w-32 z-10 pointer-events-none bg-gradient-to-r from-bg-light dark:from-bg-dark to-transparent"></div>
-        <div className="marquee-inner marquee-reverse flex transform-gpu min-w-[200%] py-4">
-          {[...cardsData, ...cardsData].map((card, index) => (
-            <CreateCard key={index} card={card} />
-          ))}
+          {/* Marquee Row 1 */}
+          <div className="marquee-row w-full mb-4 sm:mb-6">
+            <div className="marquee-inner flex transform-gpu min-w-[200%]">
+              {[...cardsData, ...cardsData].map((card, index) => (
+                <CreateCard key={`row1-${index}`} card={card} />
+              ))}
+            </div>
+          </div>
+
+          {/* Marquee Row 2 (Reversed) */}
+          <div className="marquee-row w-full">
+            <div className="marquee-inner marquee-reverse flex transform-gpu min-w-[200%]">
+              {[...cardsData, ...cardsData].reverse().map((card, index) => (
+                <CreateCard key={`row2-${index}`} card={card} />
+              ))}
+            </div>
+          </div>
+          
         </div>
-        <div className="absolute right-0 top-0 h-full w-24 md:w-32 z-10 pointer-events-none bg-gradient-to-l from-bg-light dark:from-bg-dark to-transparent"></div>
       </div>
-    </div>
+    </section>
   );
 };
 

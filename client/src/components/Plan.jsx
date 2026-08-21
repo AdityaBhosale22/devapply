@@ -1,21 +1,28 @@
+// Plan.jsx
+//[cite: 4]
 import React from "react";
 import { PricingTable } from "@clerk/clerk-react";
 
 const Plan = () => {
   return (
-    <div className="max-w-4xl mx-auto z-20 my-24 px-4">
-      <div className="text-center mb-12">
-        <h2 className="text-3xl font-bold tracking-tight text-text-light dark:text-white">
+    <section className="bg-white py-20 px-5 sm:px-8 max-w-[88rem] mx-auto">
+      <div className="flex flex-col items-center text-center gap-4 mb-16">
+        <div className="inline-flex items-center gap-2 text-sm font-medium text-[#111111]/70">
+          <span className="w-1.5 h-1.5 rounded-full bg-[#111111]/50"></span>
+          Pricing
+        </div>
+        <h2 className="text-4xl sm:text-5xl font-semibold tracking-tight text-[#111111]">
           Choose Your Plan
         </h2>
-        <p className="text-gray-500 dark:text-gray-400 mt-3 text-lg max-w-xl mx-auto">
+        <p className="text-[#111111]/60 text-base max-w-md mt-2">
           Start for Free and scale as you grow. Find the perfect plan for your career advancement needs.
         </p>
       </div>
-      <div className="mt-10 mx-auto max-sm:px-2 rounded-2xl glass-panel p-6 sm:p-10">
+
+      <div className="mx-auto rounded-[2rem] bg-[#0a0a0a] text-white p-8 sm:p-12 shadow-2xl">
         <PricingTable />
       </div>
-    </div>
+    </section>
   );
 };
 
